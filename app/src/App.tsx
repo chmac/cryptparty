@@ -5,6 +5,8 @@ import { ApolloProvider } from "react-apollo";
 import store from "./store";
 import apollo from "./apollo";
 
+import Events from "./scenes/Events";
+
 import { createInvitation } from "./services/invitations";
 
 import logo from "./logo.svg";
@@ -14,6 +16,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <ApolloProvider client={apollo}>
+        <Events />
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
