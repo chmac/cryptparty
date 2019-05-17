@@ -1,9 +1,9 @@
-import { ApolloServer } from 'apollo-server-express';
-import bodyParser from 'body-parser';
-import express from 'express';
-import http from 'http';
-import logger from 'morgan';
-import schema from './schema';
+import { ApolloServer } from "apollo-server-express";
+import bodyParser from "body-parser";
+import express from "express";
+import http from "http";
+import logger from "morgan";
+import schema from "./schema";
 
 // Creates and configures an ExpressJS web server.
 class Server {
@@ -19,12 +19,12 @@ class Server {
   }
 
   middleware() {
-    this.app.use(logger('dev'));
+    this.app.use(logger("dev"));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
 
     this.apollo.applyMiddleware({
-      app: this.app,
+      app: this.app
     });
   }
 
@@ -34,7 +34,7 @@ class Server {
      * API endpoints */
     const router = express.Router();
 
-    this.app.use('/', router);
+    this.app.use("/", router);
   }
 
   start(cb = () => null) {
