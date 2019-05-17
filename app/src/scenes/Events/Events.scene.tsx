@@ -8,7 +8,7 @@ interface State {}
 interface OwnProps {}
 
 const Events: React.FC<Props> = (props: Props) => {
-  const { setContent } = props;
+  const { setContent, createEvent } = props;
 
   return (
     <div>
@@ -19,7 +19,7 @@ const Events: React.FC<Props> = (props: Props) => {
           <textarea onChange={event => setContent(event.target.value)} />
         </p>
         <p>
-          <button>Create Event</button>
+          <button onClick={createEvent}>Create Event</button>
         </p>
       </div>
     </div>
