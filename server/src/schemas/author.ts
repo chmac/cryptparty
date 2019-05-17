@@ -1,5 +1,3 @@
-import db from '../database';
-
 export const typeDef = `
   extend type Query {
     author(firstName: String): Author!
@@ -21,32 +19,23 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    author(_, { firstName = '' }) {
-      return db
-        .query('authors')
-        .where({ firstName })
-        .first();
+    author(_, { firstName = "" }) {
+      return {
+        id: "abc123",
+        firstName: "foo",
+        lastName: "bar"
+      };
     },
-    authors: () => db.query('authors'),
+    authors: () => ({})
   },
   Mutation: {
     async createAuthor(root, args) {
-      const [author] = await db
-        .query('authors')
-        .insert(args)
-        .returning('*');
-
-      return author;
-    },
+      return {};
+    }
   },
   Author: {
     books(author, { limit = 100, offset = 0 }) {
       // TODO: Only query for selected fields (d.fieldNodes[0].selectionSet.selections)
-      return db
-        .query('books')
-        .where({ authorId: author.id })
-        .limit(limit)
-        .offset(offset);
-    },
-  },
+    }
+  }
 };

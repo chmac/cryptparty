@@ -1,5 +1,3 @@
-import db from '../database';
-
 export const typeDef = `
   extend type Query {
     book(title: String): Book
@@ -19,35 +17,21 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    book(root, { title = '' }) {
-      return db
-        .query('books')
-        .where({ title })
-        .first();
+    book(root, { title = "" }) {
+      return {};
     },
     books(root, { limit = 100, offset = 0 }) {
-      return db
-        .query('books')
-        .limit(limit)
-        .offset(offset);
-    },
+      return {};
+    }
   },
   Mutation: {
     async createBook(root, args) {
-      const [book] = await db
-        .query('books')
-        .insert(args)
-        .returning('*');
-
-      return book;
-    },
+      return {};
+    }
   },
   Book: {
     author(book) {
-      return db
-        .query('authors')
-        .where({ id: book.authorId })
-        .first();
-    },
-  },
+      return {};
+    }
+  }
 };
