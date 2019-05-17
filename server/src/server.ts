@@ -38,7 +38,7 @@ class Server {
   }
 
   start(cb = () => null) {
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 4000;
 
     this.server = this.app.listen(port, err => {
       if (err) {
