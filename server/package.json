@@ -16,10 +16,11 @@
     "cryptparty"
   ],
   "scripts": {
-    "start": "nodemon",
-    "debug": "nodemon"
+    "start": "NODE_ENV='development' nodemon",
+    "debug": "NODE_ENV='debug' nodemon"
   },
   "dependencies": {
+    "@types/nedb": "^1.8.7",
     "apollo-server": "^2.1.0",
     "apollo-server-express": "^2.1.0",
     "body-parser": "^1.18.3",
@@ -28,7 +29,8 @@
     "express": "^4.16.4",
     "graphql": "^14.0.2",
     "lodash": "^4.17.11",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

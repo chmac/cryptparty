@@ -1,4 +1,5 @@
-import * as Author from './author';
-import * as Book from './book';
+import * as Author from "./author";
+import * as Book from "./book";
+import * as Event from "./event";
 
-export { Author, Book };
+export { Author, Book, Event };
