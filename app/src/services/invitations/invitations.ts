@@ -51,7 +51,7 @@ export const decryptInvite = (
   hostPublicKey: string,
   encrypted: string
 ) => {
-  const keys = Nacl.box.keyPair.fromSecretKey(Nacl.util.decodeBase64(secret));
+  // const keys = Nacl.box.keyPair.fromSecretKey(Nacl.util.decodeBase64(secret));
   const derived = Curve.deriveKeys(hostPublicKey, secret);
   const cryptor = Curve.createEncryptor(derived);
 
