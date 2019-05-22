@@ -24,6 +24,10 @@ export const getById = async (_id: string) => {
         _id
       }
     })
+    .catch(error => {
+      alert(`Error getting event #QA3Ekl ${error.message}`);
+      throw error;
+    })
     .then(fp.get("data.event"));
 };
 
@@ -56,6 +60,7 @@ export const create = async (content: string): Promise<Keys> => {
     })
     .catch(error => {
       alert(`Error saving Event #SxA5gq ${error.message}`);
+      throw error;
     })
     .then(result => {
       console.log("secretKey #tzAWzu", secretKey);
