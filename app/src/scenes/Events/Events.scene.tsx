@@ -1,7 +1,16 @@
 import React from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
-import { withStyles, WithStyles } from "@material-ui/core";
+import {
+  withStyles,
+  WithStyles,
+  TextField,
+  Theme,
+  createStyles
+} from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import { setContent, createEvent } from "./Events.reducer";
 import { AppState } from "../../store";
@@ -12,16 +21,26 @@ const Events: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      <h1>Create an event</h1>
-      <div>
-        <p>Enter the text in markdown</p>
-        <p>
-          <textarea onChange={event => setContent(event.target.value)} />
-        </p>
-        <p>
-          <button onClick={createEvent}>Create Event</button>
-        </p>
-      </div>
+      <Paper className={classes.paper}>
+        <Typography variant="h6">Create an event</Typography>
+        <Typography variant="body2">Enter the text in markdown</Typography>
+        <TextField
+          id="content"
+          label="Content"
+          multiline
+          rows="6"
+          fullWidth
+          onChange={event => setContent(event.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={createEvent}
+        >
+          Create Event
+        </Button>
+      </Paper>
     </div>
   );
 };
@@ -47,11 +66,16 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 type Props = StateProps & DispatchProps & WithStyles;
 
-const styles = {
-  root: {
-    flexGrow: 1
-  }
-};
+const styles = (theme: Theme) =>
+  createStyles({
+    paper: {
+      ...theme.mixins.gutters(),
+      marginTop: theme.spacing.unit * 2
+    },
+    button: {
+      margin: theme.spacing.unit
+    }
+  });
 
 export default connect(
   mapStateToProps,

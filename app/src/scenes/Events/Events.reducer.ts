@@ -45,6 +45,9 @@ export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
         content
       }
     })
+    .catch(error => {
+      alert(`Error saving Event #SxA5gq ${error.message}`);
+    })
     .then(result => {
       debugger;
 
