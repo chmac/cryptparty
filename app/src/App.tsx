@@ -12,7 +12,7 @@ import { createInvitation } from "./services/invitations";
 
 import "./App.css";
 
-const App = (props: WithStyles<typeof styles>) => {
+const App: React.FC<Props> = (props: WithStyles<typeof styles>) => {
   const { classes } = props;
 
   return (
@@ -33,5 +33,7 @@ const styles = (theme: Theme) =>
       flexGrow: 1
     }
   });
+
+type Props = WithStyles;
 
 export default withStyles(styles)(App);
