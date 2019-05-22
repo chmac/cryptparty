@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import {
@@ -17,12 +17,41 @@ import { AppState } from "../../store";
 import { AnyAction } from "redux";
 
 const Events: React.FC<Props> = (props: Props) => {
-  const { classes, setContent, createEvent } = props;
+  const { classes, content, setContent, createEvent } = props;
 
-  return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Typography variant="h6">Create an event</Typography>
+  const [isPreview, setPreview] = useState(false);
+
+  const showPreview = () => {
+    return (
+      <>
+        <Typography variant="body2">{content}</Typography>
+        <Button
+          variant="contained"
+          color="default"
+          className={classes.button}
+          onClick={() => {
+            setPreview(false);
+          }}
+        >
+          Edit Again
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          onClick={() => {
+            createEvent();
+          }}
+        >
+          Publish
+        </Button>
+      </>
+    );
+  };
+
+  const showEditor = () => {
+    return (
+      <>
         <Typography variant="body2">Enter the text in markdown</Typography>
         <TextField
           id="content"
@@ -36,10 +65,21 @@ const Events: React.FC<Props> = (props: Props) => {
           variant="contained"
           color="primary"
           className={classes.button}
-          onClick={createEvent}
+          onClick={() => {
+            setPreview(true);
+          }}
         >
-          Create Event
+          Preview
         </Button>
+      </>
+    );
+  };
+
+  return (
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Typography variant="h6">Create an event</Typography>
+        {isPreview ? showPreview() : showEditor()}
       </Paper>
     </div>
   );
@@ -47,7 +87,7 @@ const Events: React.FC<Props> = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    foo: state.Events.content
+    content: state.Events.content
   };
 };
 
