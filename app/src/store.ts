@@ -7,6 +7,8 @@ const reducer = combineReducers({
   Events
 });
 
+export type AppState = ReturnType<typeof reducer>;
+
 const composeEnhancers =
   typeof window === "object" &&
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

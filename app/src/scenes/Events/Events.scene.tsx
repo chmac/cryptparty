@@ -3,9 +3,8 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 
 import { setContent, createEvent } from "./Events.reducer";
-
-interface State {}
-interface OwnProps {}
+import { AppState } from "../../store";
+import { AnyAction } from "redux";
 
 const Events: React.FC<Props> = (props: Props) => {
   const { setContent, createEvent } = props;
@@ -26,22 +25,13 @@ const Events: React.FC<Props> = (props: Props) => {
   );
 };
 
-interface StateProps {}
-
-const mapStateToProps = (state: object) => {
-  return {};
+const mapStateToProps = (state: AppState) => {
+  return {
+    foo: state.Events.content
+  };
 };
 
-interface DispatchProps {
-  setContent: (content: string) => void;
-  createEvent: () => void;
-}
-
-type Props = StateProps & OwnProps & DispatchProps;
-
-const mapDispatchToProps = (
-  dispatch: ThunkDispatch<{}, {}, any>
-): DispatchProps => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return {
     setContent: (content: string) => {
       dispatch(setContent(content));
@@ -51,6 +41,10 @@ const mapDispatchToProps = (
     }
   };
 };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+type Props = StateProps & DispatchProps;
 
 export default connect(
   mapStateToProps,

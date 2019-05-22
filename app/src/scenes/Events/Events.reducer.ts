@@ -1,12 +1,11 @@
-import { Reducer, Dispatch } from "redux";
+import { Reducer, Dispatch, Action } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { gql } from "apollo-boost";
 
 import apollo from "../../apollo";
 
 const SET_CONTENT = "cryptparty/Events/SET_CONTENT";
-export interface SetContentAction {
-  type: "cryptparty/Events/SET_CONTENT";
+export interface SetContentAction extends Action<typeof SET_CONTENT> {
   payload: {
     content: string;
   };
@@ -27,8 +26,7 @@ const CREATE_EVENT_MUTATION = gql`
 `;
 
 const CREATE_EVENT = "cryptparty/Events/CREATE_EVENT";
-export interface CreateEventAction {
-  type: "cryptparty/Events/CREATE_EVENT";
+export interface CreateEventAction extends Action<typeof CREATE_EVENT> {
   payload: {};
 }
 export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
@@ -57,6 +55,8 @@ export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
     });
 };
 
+export type Actions = SetContentAction | CreateEventAction;
+
 interface EventsState {
   content: string;
 }
@@ -64,12 +64,18 @@ const empty: EventsState = {
   content: ""
 };
 
-const reducer: Reducer = (state: EventsState = empty, action) => {
-  const { type, payload } = action;
-
-  if (type === SET_CONTENT) {
-    const { content } = payload;
-    return { content };
+const reducer: Reducer<EventsState, Actions> = (
+  state = empty,
+  action
+): EventsState => {
+  switch (action.type) {
+    // case CREATE_EVENT: {
+    //   return state;
+    // }
+    case SET_CONTENT: {
+      const { content } = action.payload;
+      return { content };
+    }
   }
 
   return state;
