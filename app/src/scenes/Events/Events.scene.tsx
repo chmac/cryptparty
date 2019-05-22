@@ -1,16 +1,17 @@
 import React from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
+import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
 
 import { setContent, createEvent } from "./Events.reducer";
 import { AppState } from "../../store";
 import { AnyAction } from "redux";
 
 const Events: React.FC<Props> = (props: Props) => {
-  const { setContent, createEvent } = props;
+  const { classes, setContent, createEvent } = props;
 
   return (
-    <div>
+    <div className={classes.root}>
       <h1>Create an event</h1>
       <div>
         <p>Enter the text in markdown</p>
@@ -44,9 +45,16 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-type Props = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps & WithStyles;
+
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    }
+  });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Events);
+)(withStyles(styles)(Events));
