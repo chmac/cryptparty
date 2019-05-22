@@ -28,7 +28,7 @@ const Events: React.FC<Props> = (props: Props) => {
           id="content"
           label="Content"
           multiline
-          rows="6"
+          rows="16"
           fullWidth
           onChange={event => setContent(event.target.value)}
         />
