@@ -1,7 +1,7 @@
 import React from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
-import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core";
 
 import { setContent, createEvent } from "./Events.reducer";
 import { AppState } from "../../store";
@@ -47,12 +47,11 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 type Props = StateProps & DispatchProps & WithStyles;
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1
-    }
-  });
+const styles = {
+  root: {
+    flexGrow: 1
+  }
+};
 
 export default connect(
   mapStateToProps,
