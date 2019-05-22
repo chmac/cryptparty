@@ -1,8 +1,7 @@
 import { Reducer, Dispatch, Action } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { gql } from "apollo-boost";
 
-import apollo from "../../apollo";
+import { create } from "../../services/events";
 
 const SET_CONTENT = "cryptparty/Events/SET_CONTENT";
 export interface SetContentAction extends Action<typeof SET_CONTENT> {
@@ -17,14 +16,6 @@ export const setContent = (content: string): SetContentAction => ({
   }
 });
 
-const CREATE_EVENT_MUTATION = gql`
-  mutation CreateEvent($_id: ID!, $content: String!) {
-    createEvent(_id: $_id, content: $content) {
-      success
-    }
-  }
-`;
-
 const CREATE_EVENT = "cryptparty/Events/CREATE_EVENT";
 export interface CreateEventAction extends Action<typeof CREATE_EVENT> {
   payload: {};
@@ -36,26 +27,9 @@ export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
   const state = getState();
   const { content } = state.Events;
 
-  debugger;
-  apollo
-    .mutate({
-      mutation: CREATE_EVENT_MUTATION,
-      variables: {
-        _id: "abc999",
-        content
-      }
-    })
-    .catch(error => {
-      alert(`Error saving Event #SxA5gq ${error.message}`);
-    })
-    .then(result => {
-      debugger;
-
-      dispatch({
-        type: CREATE_EVENT,
-        payload: {}
-      });
-    });
+  create(content).then(keys => {
+    window.location.hash = `/s/${keys.secretKey}`;
+  });
 };
 
 export type Actions = SetContentAction | CreateEventAction;
