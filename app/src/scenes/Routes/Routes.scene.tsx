@@ -1,6 +1,8 @@
 import React from "react";
 import { Router, Route } from "react-router-dom";
 import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 import history from "../../history";
@@ -12,20 +14,18 @@ const Routes: React.FC<Props> = (props: Props) => {
 
   return (
     <Router history={history}>
+      <CssBaseline />
       <Bar />
-      <Grid container className={classes.root} spacing={10}>
-        <Grid item xs={12}>
-          <Route path="/" component={CreateEvent} />
-        </Grid>
-      </Grid>
+      <Container className={classes.container}>
+        <Route path="/" component={CreateEvent} />
+      </Container>
     </Router>
   );
 };
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      ...theme.mixins.gutters(),
+    container: {
       flexGrow: 1
     }
   });

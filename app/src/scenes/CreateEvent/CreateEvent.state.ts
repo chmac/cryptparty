@@ -29,7 +29,7 @@ export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
   const { content } = state.Events;
 
   create(content).then(keys => {
-    history.push(`/s/${keys.secretKey}`);
+    history.push(`/s/${keys.secretKey}/o`);
   });
 };
 

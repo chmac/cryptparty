@@ -8,6 +8,7 @@ import {
   Theme,
   createStyles
 } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -26,26 +27,32 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
     return (
       <>
         <Typography>{content}</Typography>
-        <Button
-          variant="contained"
-          color="default"
-          className={classes.button}
-          onClick={() => {
-            setPreview(false);
-          }}
-        >
-          Edit Again
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          onClick={() => {
-            createEvent();
-          }}
-        >
-          Publish
-        </Button>
+        <Grid container className={classes.buttonGrid} spacing={2}>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="default"
+              onClick={() => {
+                setPreview(false);
+              }}
+            >
+              Edit Again
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="secondary"
+              onClick={() => {
+                createEvent();
+              }}
+            >
+              Publish
+            </Button>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -62,12 +69,13 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
             rows="16"
             fullWidth
             onChange={event => setContent(event.target.value)}
+            value={content}
           />
         </Paper>
         <Button
           variant="contained"
+          fullWidth
           color="primary"
-          className={classes.button}
           onClick={() => {
             setPreview(true);
           }}
@@ -111,10 +119,10 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
-      marginTop: theme.spacing(2)
+      margin: theme.spacing(2, 0)
     },
-    button: {
-      margin: theme.spacing(1)
+    buttonGrid: {
+      ...theme.mixins.gutters()
     }
   });
 
