@@ -5,8 +5,15 @@ export const typeDef = `
         invite(_id: ID!): Invite
     }
 
+    input InviteInput {
+      _id: ID!
+      eventId: ID!
+      invite: String!
+      invitee: String!
+    }
+
     extend type Mutation {
-        createInvite(_id: ID!, invite: String!, invitee: String!): InviteResult
+        createInvite(invite: InviteInput): InviteResult
     }
 
     type InviteResult {
@@ -21,9 +28,12 @@ export const typeDef = `
 `;
 
 interface CreateInviteArgs {
-  _id: string;
-  invite: string;
-  invitee: string;
+  invite: {
+    _id: string;
+    eventId: string;
+    invite: string;
+    invitee: string;
+  };
 }
 
 export const resolvers = {
@@ -35,9 +45,9 @@ export const resolvers = {
   },
   Mutation: {
     async createInvite(root, args: CreateInviteArgs) {
-      const { _id, invite, invitee } = args;
+      const { _id, eventId, invite, invitee } = args.invite;
       const inviteDoc = await invites.insert({ _id, content: invite });
-      await invitees.insert({ _id, content: invitee });
+      await invitees.insert({ _id, eventId, content: invitee });
       return {
         success: true,
         invite: inviteDoc

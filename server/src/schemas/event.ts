@@ -1,4 +1,4 @@
-import { events } from "../database";
+import { events, invitees } from "../database";
 const { insert, findById } = events;
 
 export const typeDef = `
@@ -6,8 +6,13 @@ export const typeDef = `
         event(_id: ID!): Event
     }
 
+    input EventInput {
+        _id: ID!
+        content: String!
+    }
+
     extend type Mutation {
-        createEvent(_id: ID!, content: String!): EventResult
+        createEvent(event: EventInput): EventResult
     }
 
     type EventResult {
@@ -28,8 +33,10 @@ export const typeDef = `
 `;
 
 interface CreateEventArgs {
-  _id: string;
-  content: string;
+  event: {
+    _id: string;
+    content: string;
+  };
 }
 
 export const resolvers = {
@@ -41,12 +48,18 @@ export const resolvers = {
   },
   Mutation: {
     async createEvent(root, args: CreateEventArgs) {
-      const { _id, content } = args;
+      const { _id, content } = args.event;
       const event = await insert({ _id, content });
       return {
         success: true,
         event
       };
+    }
+  },
+  Event: {
+    async invitees(event) {
+      const { _id } = event;
+      return invitees.findByEventId(_id);
     }
   }
 };

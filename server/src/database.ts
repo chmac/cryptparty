@@ -2,6 +2,7 @@ import Datastore from "nedb";
 
 export interface EncryptedDoc {
   _id: string;
+  eventId?: string;
   content: string;
 }
 
@@ -24,13 +25,12 @@ const factory = (dbName: string) => {
   // @TODO Figure out why this fails typing
   // const insert = async (doc: EncryptedDoc): Promise<EncryptedDoc> => {
   const insert = async (doc: EncryptedDoc) => {
-    const { _id, content } = doc;
     return new Promise((resolve, reject) => {
-      db.insert({ _id, content }, (err, newEvent: EncryptedDoc) => {
+      db.insert(doc, (err, newDoc: EncryptedDoc) => {
         if (err) {
           reject(err);
         } else {
-          resolve(newEvent);
+          resolve(newDoc);
         }
       });
     });
@@ -50,9 +50,22 @@ const factory = (dbName: string) => {
     });
   };
 
+  const findByEventId = async (eventId: string) => {
+    return new Promise((resolve, reject) => {
+      db.find({ eventId }, (err, docs: EncryptedDoc[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(docs);
+        }
+      });
+    });
+  };
+
   return {
     insert,
-    findById
+    findById,
+    findByEventId
   };
 };
 
