@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -8,42 +8,70 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
 import { AppState } from "../../store";
-import { setIsOwner } from "./ManageEvent.state";
+import { setIsOwner, loadEvent } from "./ManageEvent.state";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
-  const { match, classes, isOwner, setIsOwner } = props;
+  const { match, classes, isOwner, setIsOwner, isLoading, loadEvent } = props;
   const { key, action } = match.params;
 
   console.log("ManageEvent #T67oQd", props);
 
+  useEffect(() => {
+    loadEvent(key);
+    // Do something to fetch data
+    console.log("ManageEvent.useEffect #Pmskns");
+    return () => {
+      // Do something to clean up
+      console.log("ManageEvent.useEffect cleanup #Pmskns");
+    };
+  });
+
   if (!!action && action === "o") {
-    debugger;
     setIsOwner(true);
     return <Redirect to={`/m/${key}`} />;
   }
 
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
   return (
     <Paper>
-      <Typography variant="h2" className={classes.paper}>
-        Name
-      </Typography>
+      <Typography className={classes.paper}>{props.content}</Typography>
     </Paper>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
-  return {
-    isOwner: state.ManageEvent.isOwner
-  };
+  const { ManageEvent } = state;
+  return ManageEvent;
+  //   return {
+  //     isOwner: state.ManageEvent.isOwner,
+  //     isLoading: state.ManageEvent.isLoading,
+  //     content: state.ManageEvent.content
+  //   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, {}, AnyAction>
+) => {
   return {
     setIsOwner: (isOwner: boolean) => {
       dispatch(setIsOwner(isOwner));
+    },
+    loadEvent: (secretKey: string) => {
+      dispatch(loadEvent(secretKey));
     }
   };
 };
+
+const styles = (theme: Theme) =>
+  createStyles({
+    paper: {
+      ...theme.mixins.gutters(),
+      margin: theme.spacing(2, 0)
+    }
+  });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -55,14 +83,6 @@ type Props = StateProps &
   DispatchProps &
   WithStyles<typeof styles> &
   RouteComponentProps<RouteParams>;
-
-const styles = (theme: Theme) =>
-  createStyles({
-    paper: {
-      ...theme.mixins.gutters(),
-      margin: theme.spacing(2, 0)
-    }
-  });
 
 export default connect(
   mapStateToProps,
