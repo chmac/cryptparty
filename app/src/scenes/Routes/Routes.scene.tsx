@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import history from "../../history";
 import Bar from "../Bar";
 import CreateEvent from "../CreateEvent";
+import ManageEvent from "../ManageEvent";
 
 const Routes: React.FC<Props> = (props: Props) => {
   const { classes } = props;
@@ -17,7 +18,8 @@ const Routes: React.FC<Props> = (props: Props) => {
       <CssBaseline />
       <Bar />
       <Container className={classes.container}>
-        <Route path="/" component={CreateEvent} />
+        <Route exact path="/" component={CreateEvent} />
+        <Route path="/m/:key/:action?" component={ManageEvent} />
       </Container>
     </Router>
   );
