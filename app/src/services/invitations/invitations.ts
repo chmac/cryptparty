@@ -1,6 +1,7 @@
 /// <reference path="../../../modules.d.ts"/>
 import cryptoFactory from "chainpad-crypto";
 import Nacl from "tweetnacl";
+import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
 
 // const { Curve, Nacl } = crypto;
 const crypto = cryptoFactory(Nacl);
@@ -12,7 +13,7 @@ export const createInvitation = () => {
   const keys = Nacl.box.keyPair();
   // Encrypt the content to the public key
   const encrypted: string = crypto.encrypt(content, keys.secretKey);
-  const base64secret: string = Nacl.util.encodeBase64(keys.secretKey);
+  const base64secret: string = encodeURLSafe(keys.secretKey);
   console.log("key, encrypted #WalxgY", base64secret, encrypted);
 
   (window as any).encrypted = encrypted;
@@ -25,8 +26,8 @@ export const createInvitation = () => {
 
   // Create a set of derived keys
   const derived = Curve.deriveKeys(
-    Nacl.util.encodeBase64(keys.publicKey),
-    Nacl.util.encodeBase64(newKeys.secretKey)
+    encodeURLSafe(keys.publicKey),
+    encodeURLSafe(newKeys.secretKey)
   );
 
   const name = window.prompt("Invitee") || "";
@@ -37,8 +38,8 @@ export const createInvitation = () => {
 
   console.log(
     "invitee #TmR93I",
-    Nacl.util.encodeBase64(keys.publicKey),
-    Nacl.util.encodeBase64(newKeys.secretKey),
+    encodeURLSafe(keys.publicKey),
+    encodeURLSafe(newKeys.secretKey),
     inviteeMessage
   );
 };

@@ -1,6 +1,7 @@
 /// <reference path="../../../modules.d.ts"/>
 import cryptoFactory from "chainpad-crypto";
 import Nacl from "tweetnacl";
+import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
 
 import apollo from "../../apollo";
 import { gql, ApolloQueryResult } from "apollo-boost";
@@ -8,9 +9,11 @@ import { gql, ApolloQueryResult } from "apollo-boost";
 const crypto = cryptoFactory(Nacl);
 
 // This is what a decrypted event looks like
-export interface Event {
-  _id: string;
+export interface NewEvent {
   description: string;
+}
+export interface Event extends NewEvent {
+  _id: string;
 }
 
 // @TODO Figure out how to convert gql tags into types
@@ -38,15 +41,13 @@ const parse = (json: string) => {
 };
 
 export const getBySecretKey = async (secretKey: string): Promise<Event> => {
-  const keys = Nacl.box.keyPair.fromSecretKey(
-    Nacl.util.decodeBase64(secretKey)
-  );
+  const keys = Nacl.box.keyPair.fromSecretKey(decodeURLSafe(secretKey));
 
   return apollo
     .query({
       query: GET_EVENT,
       variables: {
-        _id: Nacl.util.encodeBase64(keys.publicKey)
+        _id: encodeURLSafe(keys.publicKey)
       }
     })
     .catch(error => {
@@ -66,7 +67,7 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
 
 const CREATE_EVENT_MUTATION = gql`
   mutation CreateEvent($_id: ID!, $content: String!) {
-    createEvent(_id: $_id, content: $content) {
+    createEvent(event: { _id: $_id, content: $content }) {
       success
     }
   }
@@ -77,11 +78,12 @@ interface Keys {
   publicKey: string;
 }
 
-export const create = async (content: string): Promise<Keys> => {
+export const create = async (event: NewEvent): Promise<Keys> => {
   const keys = Nacl.box.keyPair();
-  const encrypted = crypto.encrypt(content, keys.secretKey);
-  const secretKey = Nacl.util.encodeBase64(keys.secretKey);
-  const publicKey = Nacl.util.encodeBase64(keys.publicKey);
+  const json = JSON.stringify(event);
+  const encrypted = crypto.encrypt(json, keys.secretKey);
+  const secretKey = encodeURLSafe(keys.secretKey);
+  const publicKey = encodeURLSafe(keys.publicKey);
 
   return apollo
     .mutate({
