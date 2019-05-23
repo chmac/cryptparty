@@ -88,7 +88,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Typography variant="h6">Create an event</Typography>
+      <Typography variant="h2">Create an event</Typography>
       {isPreview ? showPreview() : showEditor()}
     </>
   );
