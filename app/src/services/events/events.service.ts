@@ -1,12 +1,13 @@
 /// <reference path="../../../modules.d.ts"/>
-import crypto from "chainpad-crypto";
+import cryptoFactory from "chainpad-crypto";
+import Nacl from "tweetnacl";
 
 import apollo from "../../apollo";
-import { gql } from "apollo-boost";
-import fp from "lodash/fp";
+import { gql, ApolloQueryResult } from "apollo-boost";
 
-const { Nacl } = crypto;
+const crypto = cryptoFactory(Nacl);
 
+// @TODO Figure out how to convert gql tags into types
 const GET_EVENT = gql`
   query getEvent($_id: ID!) {
     event(_id: $_id) {
@@ -15,20 +16,32 @@ const GET_EVENT = gql`
     }
   }
 `;
+interface GetEventQueryResult {
+  event: {
+    _id: string;
+    content: string;
+  };
+}
 
-export const getById = async (_id: string) => {
+export const getBySecretKey = async (secretKey: string) => {
+  const keys = Nacl.box.keyPair.fromSecretKey(
+    Nacl.util.decodeBase64(secretKey)
+  );
+
   return apollo
     .query({
       query: GET_EVENT,
       variables: {
-        _id
+        _id: Nacl.util.encodeBase64(keys.publicKey)
       }
     })
     .catch(error => {
       alert(`Error getting event #QA3Ekl ${error.message}`);
       throw error;
     })
-    .then(fp.get("data.event"));
+    .then((response: ApolloQueryResult<GetEventQueryResult>): string => {
+      return crypto.decrypt(response.data.event.content, keys.secretKey);
+    });
 };
 
 const CREATE_EVENT_MUTATION = gql`
@@ -70,5 +83,3 @@ export const create = async (content: string): Promise<Keys> => {
       };
     });
 };
-
-(window as any).getById = getById;

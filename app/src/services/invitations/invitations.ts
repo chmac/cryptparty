@@ -1,7 +1,10 @@
 /// <reference path="../../../modules.d.ts"/>
-import crypto from "chainpad-crypto";
+import cryptoFactory from "chainpad-crypto";
+import Nacl from "tweetnacl";
 
-const { Curve, Nacl } = crypto;
+// const { Curve, Nacl } = crypto;
+const crypto = cryptoFactory(Nacl);
+const { Curve } = crypto;
 
 export const createInvitation = () => {
   const content = window.prompt("Enter your invitation text") || "";
