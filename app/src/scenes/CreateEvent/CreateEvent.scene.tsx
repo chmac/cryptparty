@@ -25,7 +25,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
   const showPreview = () => {
     return (
       <>
-        <Typography variant="body2">{content}</Typography>
+        <Typography>{content}</Typography>
         <Button
           variant="contained"
           color="default"
@@ -53,15 +53,17 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
   const showEditor = () => {
     return (
       <>
-        <Typography variant="body2">Enter the text in markdown</Typography>
-        <TextField
-          id="content"
-          label="Content"
-          multiline
-          rows="16"
-          fullWidth
-          onChange={event => setContent(event.target.value)}
-        />
+        <Typography>Enter the text in markdown</Typography>
+        <Paper className={classes.paper}>
+          <TextField
+            id="content"
+            label="Content"
+            multiline
+            rows="16"
+            fullWidth
+            onChange={event => setContent(event.target.value)}
+          />
+        </Paper>
         <Button
           variant="contained"
           color="primary"
@@ -77,12 +79,10 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Typography variant="h6">Create an event</Typography>
-        {isPreview ? showPreview() : showEditor()}
-      </Paper>
-    </div>
+    <>
+      <Typography variant="h6">Create an event</Typography>
+      {isPreview ? showPreview() : showEditor()}
+    </>
   );
 };
 
@@ -111,10 +111,10 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
-      marginTop: theme.spacing.unit * 2
+      marginTop: theme.spacing(2)
     },
     button: {
-      margin: theme.spacing.unit
+      margin: theme.spacing(1)
     }
   });
 

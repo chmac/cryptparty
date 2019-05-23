@@ -13,7 +13,7 @@ const Routes: React.FC<Props> = (props: Props) => {
   return (
     <Router history={history}>
       <Bar />
-      <Grid container className={classes.root} spacing={16}>
+      <Grid container className={classes.root} spacing={10}>
         <Grid item xs={12}>
           <Route path="/" component={CreateEvent} />
         </Grid>
