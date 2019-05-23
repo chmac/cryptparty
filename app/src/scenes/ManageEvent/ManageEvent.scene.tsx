@@ -33,8 +33,13 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
     return <div>Loading</div>;
   }
 
+  const showOwnerMesage = () => {
+    return <Typography variant="h2">Send Invite</Typography>;
+  };
+
   return (
     <Paper>
+      {isOwner ? showOwnerMesage() : null}
       <Typography className={classes.paper}>{props.content}</Typography>
     </Paper>
   );
