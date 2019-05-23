@@ -1,10 +1,10 @@
 import thunkMiddleware from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 
-import Events from "./scenes/Events/Events.reducer";
+import CreateEvent from "./scenes/CreateEvent/CreateEvent.state";
 
 const reducer = combineReducers({
-  Events
+  CreateEvent
 });
 
 export type AppState = ReturnType<typeof reducer>;

@@ -12,11 +12,11 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import { setContent, createEvent } from "./Events.reducer";
+import { setContent, createEvent } from "./CreateEvent.state";
 import { AppState } from "../../store";
 import { AnyAction } from "redux";
 
-const Events: React.FC<Props> = (props: Props) => {
+const CreateEvent: React.FC<Props> = (props: Props) => {
   const { classes, content, setContent, createEvent } = props;
 
   const [isPreview, setPreview] = useState(false);
@@ -87,7 +87,7 @@ const Events: React.FC<Props> = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    content: state.Events.content
+    content: state.CreateEvent.content
   };
 };
 
@@ -120,4 +120,4 @@ const styles = (theme: Theme) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Events));
+)(withStyles(styles)(CreateEvent));
