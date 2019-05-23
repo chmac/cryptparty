@@ -12,7 +12,7 @@
     "@types/react-redux": "^7.0.9",
     "@types/react-router-dom": "^4.3.3",
     "apollo-boost": "^0.3.1",
-    "chainpad-crypto": "git://github.com/chmac/chainpad-crypto.git#exports",
+    "chainpad-crypto": "git://github.com/chmac/chainpad-crypto.git#just-default-export-factory",
     "graphql": "^14.3.0",
     "history": "^4.9.0",
     "lodash": "^4.17.11",
@@ -24,6 +24,7 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "tweetnacl": "git://github.com/dchest/tweetnacl-js.git#v0.12.2",
     "typescript": "3.4.5"
   },
   "scripts": {

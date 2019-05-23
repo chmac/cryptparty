@@ -39,5 +39,33 @@ declare module "chainpad-crypto" {
     }
   };
 
+  export = any => module;
+}
+
+declare module "tweetnacl" {
+  interface KeyPairResult {
+    publicKey: Uint8Array;
+    secretKey: Uint8Array;
+  }
+  interface KeyPair {
+    (): KeyPairResult;
+    fromSecretKey(key: Uint8Array): KeyPairResult;
+  }
+  interface DerivedKeySet {
+    cryptKey: string;
+    signKey: string;
+    validateKey: string;
+  }
+
+  const module = {
+    box: {
+      keyPair: keyPair
+    },
+    util: {
+      encodeBase64(input: Uint8Array): string;,
+      decodeBase64(input: string): Uint8Array;
+    }
+  };
+
   export = module;
 }
