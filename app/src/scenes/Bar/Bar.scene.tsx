@@ -25,6 +25,6 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = WithStyles;
+type Props = WithStyles<typeof styles>;
 
 export default withStyles(styles)(Bar);

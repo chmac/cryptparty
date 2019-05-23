@@ -50,7 +50,7 @@ interface RouteParams {
 }
 type Props = StateProps &
   DispatchProps &
-  WithStyles &
+  WithStyles<typeof styles> &
   RouteComponentProps<RouteParams>;
 
 const styles = (theme: Theme) =>
