@@ -11,11 +11,11 @@ import { AppState } from "../../store";
 import { setIsOwner, loadEvent } from "./ManageEvent.state";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
-  const { match, classes, isOwner, setIsOwner, isLoading, loadEvent } = props;
+  const { match, classes } = props;
   const { key, action } = match.params;
 
   useEffect(() => {
-    loadEvent(key);
+    props.loadEvent(key);
     // Do something to fetch data
     console.log("ManageEvent.useEffect #Pmskns");
     return () => {
@@ -25,11 +25,14 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
   });
 
   if (!!action && action === "o") {
-    setIsOwner(true);
+    props.setIsOwner(true);
+    // Remove the trailing `/o` part from the URL. This allows the event owner
+    // to share this URL from their browser directly, and the recipient will not
+    // see the "share this page" message.
     return <Redirect to={`/m/${key}`} />;
   }
 
-  if (isLoading) {
+  if (props.isLoading) {
     return <div>Loading</div>;
   }
 
@@ -39,8 +42,8 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <Paper>
-      {isOwner ? showOwnerMesage() : null}
-      <Typography className={classes.paper}>{props.content}</Typography>
+      {props.isOwner ? showOwnerMesage() : null}
+      <Typography className={classes.paper}>{props.description}</Typography>
     </Paper>
   );
 };

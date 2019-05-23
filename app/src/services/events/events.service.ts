@@ -7,6 +7,12 @@ import { gql, ApolloQueryResult } from "apollo-boost";
 
 const crypto = cryptoFactory(Nacl);
 
+// This is what a decrypted event looks like
+export interface Event {
+  _id: string;
+  description: string;
+}
+
 // @TODO Figure out how to convert gql tags into types
 const GET_EVENT = gql`
   query getEvent($_id: ID!) {
@@ -23,7 +29,7 @@ interface GetEventQueryResult {
   };
 }
 
-export const getBySecretKey = async (secretKey: string) => {
+export const getBySecretKey = async (secretKey: string): Promise<Event> => {
   const keys = Nacl.box.keyPair.fromSecretKey(
     Nacl.util.decodeBase64(secretKey)
   );
@@ -39,11 +45,11 @@ export const getBySecretKey = async (secretKey: string) => {
       alert(`Error getting event #QA3Ekl ${error.message}`);
       throw error;
     })
-    .then(
-      (response: ApolloQueryResult<GetEventQueryResult>): string => {
-        return crypto.decrypt(response.data.event.content, keys.secretKey);
-      }
-    );
+    .then((response: ApolloQueryResult<GetEventQueryResult>) => {
+      const json = crypto.decrypt(response.data.event.content, keys.secretKey);
+      const event: Event = JSON.parse(json);
+      return event;
+    });
 };
 
 const CREATE_EVENT_MUTATION = gql`
