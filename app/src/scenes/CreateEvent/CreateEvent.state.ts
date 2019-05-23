@@ -1,4 +1,4 @@
-import { Reducer, Dispatch, Action } from "redux";
+import { Reducer, Action } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import history from "../../history";
