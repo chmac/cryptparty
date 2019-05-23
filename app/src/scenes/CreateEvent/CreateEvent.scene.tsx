@@ -100,7 +100,9 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<AppState, {}, AnyAction>
+) => {
   return {
     setContent: (content: string) => {
       dispatch(setContent(content));

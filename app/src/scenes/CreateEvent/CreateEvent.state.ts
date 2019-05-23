@@ -3,6 +3,7 @@ import { ThunkAction } from "redux-thunk";
 
 import history from "../../history";
 import { create } from "../../services/events";
+import { AppState } from "../../store";
 
 const SET_CONTENT = "cryptparty/Events/SET_CONTENT";
 export interface SetContentAction extends Action<typeof SET_CONTENT> {
@@ -21,12 +22,14 @@ const CREATE_EVENT = "cryptparty/Events/CREATE_EVENT";
 export interface CreateEventAction extends Action<typeof CREATE_EVENT> {
   payload: {};
 }
-export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
-  dispatch: Dispatch,
-  getState: () => any
-) => {
+export const createEvent = (): ThunkAction<
+  void,
+  AppState,
+  {},
+  CreateEventAction
+> => (dispatch, getState) => {
   const state = getState();
-  const { content } = state.Events;
+  const { content } = state.CreateEvent;
 
   create(content).then(keys => {
     history.push(`/s/${keys.secretKey}/o`);
