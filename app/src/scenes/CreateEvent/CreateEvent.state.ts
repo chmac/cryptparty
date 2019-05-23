@@ -31,8 +31,8 @@ export const createEvent = (): ThunkAction<
   const state = getState();
   const { description } = state.CreateEvent.event;
 
-  create(description).then(keys => {
-    history.push(`/s/${keys.secretKey}/o`);
+  create({ description }).then(keys => {
+    history.push(`/m/${keys.secretKey}/o`);
   });
 };
 
