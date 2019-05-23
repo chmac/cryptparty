@@ -1,8 +1,9 @@
 import React from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
+import history from "../../history";
 import Bar from "../Bar";
 import CreateEvent from "../CreateEvent";
 
@@ -10,7 +11,7 @@ const Routes: React.FC<Props> = (props: Props) => {
   const { classes } = props;
 
   return (
-    <Router>
+    <Router history={history}>
       <Bar />
       <Grid container className={classes.root} spacing={16}>
         <Grid item xs={12}>

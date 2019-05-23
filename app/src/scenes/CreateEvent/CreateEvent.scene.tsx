@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import { setContent, createEvent } from "./CreateEvent.state";
 import { AppState } from "../../store";
 import { AnyAction } from "redux";
+import { RouteComponentProps } from "react-router";
 
 const CreateEvent: React.FC<Props> = (props: Props) => {
   const { classes, content, setContent, createEvent } = props;
@@ -104,7 +105,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-type Props = StateProps & DispatchProps & WithStyles;
+type Props = StateProps & DispatchProps & WithStyles & RouteComponentProps;
 
 const styles = (theme: Theme) =>
   createStyles({

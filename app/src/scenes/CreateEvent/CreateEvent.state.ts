@@ -1,6 +1,7 @@
 import { Reducer, Dispatch, Action } from "redux";
 import { ThunkAction } from "redux-thunk";
 
+import history from "../../history";
 import { create } from "../../services/events";
 
 const SET_CONTENT = "cryptparty/Events/SET_CONTENT";
@@ -28,7 +29,7 @@ export const createEvent = (): ThunkAction<void, {}, {}, CreateEventAction> => (
   const { content } = state.Events;
 
   create(content).then(keys => {
-    window.location.hash = `/s/${keys.secretKey}`;
+    history.push(`/s/${keys.secretKey}`);
   });
 };
 
