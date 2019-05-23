@@ -111,13 +111,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   };
 };
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-type Props = StateProps &
-  DispatchProps &
-  WithStyles<typeof styles> &
-  RouteComponentProps;
-
 const styles = (theme: Theme) =>
   createStyles({
     paper: {
@@ -128,6 +121,13 @@ const styles = (theme: Theme) =>
       ...theme.mixins.gutters()
     }
   });
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+type Props = StateProps &
+  DispatchProps &
+  WithStyles<typeof styles> &
+  RouteComponentProps;
 
 export default connect(
   mapStateToProps,
