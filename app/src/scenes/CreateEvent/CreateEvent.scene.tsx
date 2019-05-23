@@ -19,14 +19,14 @@ import { AnyAction } from "redux";
 import { RouteComponentProps } from "react-router";
 
 const CreateEvent: React.FC<Props> = (props: Props) => {
-  const { classes, content, setContent, createEvent } = props;
+  const { classes, event, setContent, createEvent } = props;
 
   const [isPreview, setPreview] = useState(false);
 
   const showPreview = () => {
     return (
       <>
-        <Typography>{content}</Typography>
+        <Typography>{event.description}</Typography>
         <Grid container className={classes.buttonGrid} spacing={2}>
           <Grid item xs={6}>
             <Button
@@ -69,7 +69,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
             rows="16"
             fullWidth
             onChange={event => setContent(event.target.value)}
-            value={content}
+            value={event.description}
           />
         </Paper>
         <Button
@@ -96,7 +96,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    content: state.CreateEvent.content
+    event: state.CreateEvent.event
   };
 };
 
@@ -104,8 +104,8 @@ const mapDispatchToProps = (
   dispatch: ThunkDispatch<AppState, {}, AnyAction>
 ) => {
   return {
-    setContent: (content: string) => {
-      dispatch(setContent(content));
+    setContent: (description: string) => {
+      dispatch(setContent(description));
     },
     createEvent: () => {
       dispatch(createEvent());

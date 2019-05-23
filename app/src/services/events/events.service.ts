@@ -29,6 +29,14 @@ interface GetEventQueryResult {
   };
 }
 
+const parse = (json: string) => {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    throw new Error(`Invalid Event data. #rpxQVx ${e.message}`);
+  }
+};
+
 export const getBySecretKey = async (secretKey: string): Promise<Event> => {
   const keys = Nacl.box.keyPair.fromSecretKey(
     Nacl.util.decodeBase64(secretKey)
@@ -46,7 +54,11 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
       throw error;
     })
     .then((response: ApolloQueryResult<GetEventQueryResult>) => {
+      if (response.data.event === null) {
+        throw new Error("Could not load event #RMLJzZ");
+      }
       const json = crypto.decrypt(response.data.event.content, keys.secretKey);
+
       const event: Event = JSON.parse(json);
       return event;
     });

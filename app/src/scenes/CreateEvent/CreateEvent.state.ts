@@ -5,16 +5,16 @@ import history from "../../history";
 import { create } from "../../services/events";
 import { AppState } from "../../store";
 
-const SET_CONTENT = "cryptparty/Events/SET_CONTENT";
-export interface SetContentAction extends Action<typeof SET_CONTENT> {
+const SET_DESCRIPTION = "cryptparty/Events/SET_DESCRIPTION";
+export interface SetContentAction extends Action<typeof SET_DESCRIPTION> {
   payload: {
-    content: string;
+    description: string;
   };
 }
-export const setContent = (content: string): SetContentAction => ({
-  type: SET_CONTENT,
+export const setContent = (description: string): SetContentAction => ({
+  type: SET_DESCRIPTION,
   payload: {
-    content
+    description
   }
 });
 
@@ -29,9 +29,9 @@ export const createEvent = (): ThunkAction<
   CreateEventAction
 > => (dispatch, getState) => {
   const state = getState();
-  const { content } = state.CreateEvent;
+  const { description } = state.CreateEvent.event;
 
-  create(content).then(keys => {
+  create(description).then(keys => {
     history.push(`/s/${keys.secretKey}/o`);
   });
 };
@@ -39,10 +39,14 @@ export const createEvent = (): ThunkAction<
 export type Actions = SetContentAction | CreateEventAction;
 
 interface EventsState {
-  content: string;
+  event: {
+    description: string;
+  };
 }
 const empty: EventsState = {
-  content: ""
+  event: {
+    description: ""
+  }
 };
 
 const reducer: Reducer<EventsState, Actions> = (
@@ -53,9 +57,9 @@ const reducer: Reducer<EventsState, Actions> = (
     // case CREATE_EVENT: {
     //   return state;
     // }
-    case SET_CONTENT: {
-      const { content } = action.payload;
-      return { content };
+    case SET_DESCRIPTION: {
+      const { description } = action.payload;
+      return { ...state, event: { description } };
     }
   }
 
