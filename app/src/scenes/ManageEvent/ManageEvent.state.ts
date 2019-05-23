@@ -53,10 +53,6 @@ export const loadEvent = (
     const event = await getBySecretKey(secretKey);
     dispatch(_loadEvent(secretKey, event));
   } catch (error) {
-    // If this is a new error, alert the user
-    if (state.ManageEvent.error !== error.message) {
-      alert(error.message);
-    }
     dispatch(_loadEventError(error.message));
   }
 };

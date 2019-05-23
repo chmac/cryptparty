@@ -36,6 +36,17 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
     return <div>Loading</div>;
   }
 
+  if (props.isError) {
+    return (
+      <div>
+        <Typography variant="h2" color="error">
+          Error
+        </Typography>
+        <Typography>{props.error}</Typography>
+      </div>
+    );
+  }
+
   const showOwnerMesage = () => {
     return <Typography variant="h2">Send Invite</Typography>;
   };
