@@ -14,8 +14,6 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
   const { match, classes, isOwner, setIsOwner, isLoading, loadEvent } = props;
   const { key, action } = match.params;
 
-  console.log("ManageEvent #T67oQd", props);
-
   useEffect(() => {
     loadEvent(key);
     // Do something to fetch data

@@ -39,9 +39,11 @@ export const getBySecretKey = async (secretKey: string) => {
       alert(`Error getting event #QA3Ekl ${error.message}`);
       throw error;
     })
-    .then((response: ApolloQueryResult<GetEventQueryResult>): string => {
-      return crypto.decrypt(response.data.event.content, keys.secretKey);
-    });
+    .then(
+      (response: ApolloQueryResult<GetEventQueryResult>): string => {
+        return crypto.decrypt(response.data.event.content, keys.secretKey);
+      }
+    );
 };
 
 const CREATE_EVENT_MUTATION = gql`
@@ -76,7 +78,6 @@ export const create = async (content: string): Promise<Keys> => {
       throw error;
     })
     .then(result => {
-      console.log("secretKey #tzAWzu", secretKey);
       return {
         secretKey,
         publicKey
