@@ -4,12 +4,14 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 import { AppState } from "../../store";
 import { setIsOwner } from "./ManageEvent.state";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
-  const { match, isOwner, setIsOwner } = props;
+  const { match, classes, isOwner, setIsOwner } = props;
   const { key, action } = match.params;
 
   console.log("ManageEvent #T67oQd", props);
@@ -21,10 +23,11 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <div>
-      <p>Some thing coming</p>
-      <p>Key is: {key}</p>
-    </div>
+    <Paper>
+      <Typography variant="h2" className={classes.paper}>
+        Name
+      </Typography>
+    </Paper>
   );
 };
 
@@ -58,9 +61,6 @@ const styles = (theme: Theme) =>
     paper: {
       ...theme.mixins.gutters(),
       margin: theme.spacing(2, 0)
-    },
-    buttonGrid: {
-      ...theme.mixins.gutters()
     }
   });
 
