@@ -1,6 +1,6 @@
 import Datastore from "nedb";
 
-interface EncryptedDoc {
+export interface EncryptedDoc {
   _id: string;
   content: string;
 }
