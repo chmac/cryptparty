@@ -3,7 +3,6 @@ import { ThunkAction } from "redux-thunk";
 
 import { AppState } from "../../store";
 import { Event, getBySecretKey } from "../../services/events";
-import { async } from "q";
 
 const SET_IS_OWNER = "cryptparty/ManageEvent/SET_IS_OWNER";
 export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {
