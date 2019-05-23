@@ -1,11 +1,11 @@
 import React from "react";
 import { RouteComponentProps, Redirect } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
-import { AppState } from "../../store";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 
+import { AppState } from "../../store";
 import { setIsOwner } from "./ManageEvent.state";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
