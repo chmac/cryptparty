@@ -1,5 +1,5 @@
-import { makeExecutableSchema } from 'apollo-server';
-import * as schemas from './schemas';
+import { makeExecutableSchema } from "apollo-server";
+import * as schemas from "./schemas";
 
 const BaseQuery = `
   type Query {
@@ -19,7 +19,7 @@ const executableSchema = Object.values(schemas).reduce(
   },
   {
     typeDefs: [BaseQuery],
-    resolvers: [],
+    resolvers: []
   }
 );
 

@@ -1,4 +1,5 @@
-import { insert, findById } from "../database";
+import { events } from "../database";
+const { insert, findById } = events;
 
 export const typeDef = `
     extend type Query {
@@ -17,8 +18,19 @@ export const typeDef = `
     type Event {
         _id: ID!
         content: String
+        invitees: [Invitee]
+    }
+
+    type Invitee {
+        _id: ID!
+        content: String
     }
 `;
+
+interface CreateEventArgs {
+  _id: string;
+  content: string;
+}
 
 export const resolvers = {
   Query: {
@@ -28,9 +40,8 @@ export const resolvers = {
     }
   },
   Mutation: {
-    async createEvent(root, args) {
+    async createEvent(root, args: CreateEventArgs) {
       const { _id, content } = args;
-      console.log("Hit createEvent #RONuh4", _id, content);
       const event = await insert({ _id, content });
       return {
         success: true,
