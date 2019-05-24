@@ -72,10 +72,12 @@ export const createInvite = (): ThunkAction<void, AppState, {}, AnyAction> => (
     return;
   }
   // Create the invitation
-  create(name, state.ManageEvent.event).then(keys => {
-    // Redirect to the new invitation URL
-    history.push(`/i/${keys.secretKey}/o`);
-  });
+  create(name, state.ManageEvent.event, state.ManageEvent.secreteKey).then(
+    keys => {
+      // Redirect to the new invitation URL
+      history.push(`/i/${keys.secretKey}/o`);
+    }
+  );
 };
 
 export type Actions = SetIsOwnerAction | LoadEventErrorAction | LoadEventAction;
@@ -85,6 +87,7 @@ interface State {
   isLoading: boolean;
   isError: boolean;
   error: string;
+  secreteKey: string;
   event: Event;
 }
 const empty: State = {
@@ -92,6 +95,7 @@ const empty: State = {
   isLoading: true,
   isError: false,
   error: "",
+  secreteKey: "",
   event: {
     _id: "",
     description: ""
@@ -106,6 +110,7 @@ const reducer: Reducer<State, Actions> = (state = empty, action): State => {
       return {
         ...state,
         isLoading: false,
+        secreteKey: action.payload.secretKey,
         event: action.payload.event
       };
     }
