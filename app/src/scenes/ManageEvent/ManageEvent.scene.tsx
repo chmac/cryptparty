@@ -58,7 +58,7 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       <Grid container justify="flex-end">
         <Grid item xs={12}>
           <Button fullWidth variant="contained" onClick={props.createInvite}>
-            Create Invite Page
+            Create Invitation Page
           </Button>
         </Grid>
       </Grid>
