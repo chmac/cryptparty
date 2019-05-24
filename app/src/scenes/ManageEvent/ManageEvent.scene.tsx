@@ -3,6 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
+import ReactMarkdown from "react-markdown";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -40,11 +41,9 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Paper>
-        <Typography variant="h2">Invite Friends</Typography>
-        <Typography className={classes.paper}>
-          {props.event.description}
-        </Typography>
+      <Typography variant="h2">Invite Friends</Typography>
+      <Paper className={classes.paper}>
+        <ReactMarkdown source={props.event.description} />
       </Paper>
       <List dense>
         {props.event.invitees.map(invitee => {
@@ -91,6 +90,7 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
+      padding: theme.spacing(2),
       margin: theme.spacing(2, 0)
     }
   });
