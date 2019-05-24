@@ -112,13 +112,17 @@ export const create = async (
   event: Event,
   ownerKey: string
 ): Promise<CreateResponse> => {
+  // Create a copy of the `event` with the `invitee` key removed. We don't want
+  // to include this in the invitations.
+  const { invitees, ...eventWithoutInvitees } = event;
+
   // Build a key for the new recipient
   const keys = Nacl.box.keyPair();
   const secretKey = encodeURLSafe(keys.secretKey);
   const publicKey = encodeURLSafe(keys.publicKey);
   const inviteJson = JSON.stringify({
     name,
-    event
+    event: eventWithoutInvitees
   });
   const invite = crypto.encrypt(inviteJson, keys.secretKey);
   const inviteeJson = JSON.stringify({
