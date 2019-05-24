@@ -102,9 +102,15 @@ interface Keys {
   publicKey: string;
 }
 
-export const create = async (name: string, event: Event): Promise<Keys> => {
-  // Get the event from the `eventId`
+export const create = async (
+  name: string,
+  event: Event,
+  ownerKey: string
+): Promise<Keys> => {
+  // Build a key for the new recipient
   const keys = Nacl.box.keyPair();
+  const secretKey = encodeURLSafe(keys.secretKey);
+  const publicKey = encodeURLSafe(keys.publicKey);
   const inviteJson = JSON.stringify({
     name,
     event
@@ -114,9 +120,10 @@ export const create = async (name: string, event: Event): Promise<Keys> => {
     eventId: event._id,
     name
   });
-  const invitee = crypto.encrypt(inviteeJson, keys.secretKey);
-  const secretKey = encodeURLSafe(keys.secretKey);
-  const publicKey = encodeURLSafe(keys.publicKey);
+
+  // Encrypt a record of who we invited, for the owner's key
+  const ownerKeys = Nacl.box.keyPair.fromSecretKey(decodeURLSafe(ownerKey));
+  const invitee = crypto.encrypt(inviteeJson, ownerKeys.secretKey);
 
   return apollo
     .mutate({
