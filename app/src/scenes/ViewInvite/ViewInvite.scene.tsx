@@ -3,9 +3,11 @@ import { RouteComponentProps, Redirect } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
+import ReactMarkdown from "react-markdown";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Modal from "@material-ui/core/Modal";
 
 import { AppState } from "../../store";
 import { setIsOwner, loadInvite } from "./ViewInvite.state";
@@ -42,7 +44,21 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
   }
 
   const showOwnerMesage = () => {
-    return <Typography variant="h2">Send Invite</Typography>;
+    return (
+      <Modal open={true}>
+        <div className={classes.modal}>
+          <Paper className={classes.paper}>
+            <Typography variant="h2">
+              {props.invite.name}'s invitation
+            </Typography>
+            <Typography>
+              This is {props.invite.name}'s invitation page. Send this page to{" "}
+              {props.invite.name} so they can see the invitation.
+            </Typography>
+          </Paper>
+        </div>
+      </Modal>
+    );
   };
 
   return (
@@ -50,7 +66,7 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
       {props.isOwner ? showOwnerMesage() : null}
       <Typography variant="h2">Dear {props.invite.name}</Typography>
       <Paper className={classes.paper}>
-        <Typography>{props.invite.event.description}</Typography>
+        <ReactMarkdown source={props.invite.event.description} />
       </Paper>
     </>
   );
@@ -80,6 +96,12 @@ const styles = (theme: Theme) =>
       ...theme.mixins.gutters(),
       padding: theme.spacing(2, 0),
       margin: theme.spacing(2, 0)
+    },
+    modal: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)"
     }
   });
 

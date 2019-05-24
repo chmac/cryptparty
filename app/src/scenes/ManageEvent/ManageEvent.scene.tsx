@@ -39,28 +39,54 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
     );
   }
 
+  const getInvitees = () => {
+    if (!props.event.invitees || !props.event.invitees.length) {
+      return (
+        <ListItem>
+          <ListItemText>Nobody so far...</ListItemText>
+        </ListItem>
+      );
+    }
+    return props.event.invitees.map(invitee => {
+      return (
+        <ListItem key={invitee._id}>
+          <ListItemText>{invitee.name}</ListItemText>
+        </ListItem>
+      );
+    });
+  };
+
   return (
     <>
-      <Typography variant="h2">Invite Friends</Typography>
-      <Paper className={classes.paper}>
-        <ReactMarkdown source={props.event.description} />
-      </Paper>
-      <List dense>
-        {props.event.invitees.map(invitee => {
-          return (
-            <ListItem key={invitee._id}>
-              <ListItemText>{invitee.name}</ListItemText>
-            </ListItem>
-          );
-        })}
-      </List>
+      <Typography>
+        Save this URL. This is your event. If you lose this page there is no way
+        to recover it.
+      </Typography>
+      <Typography>
+        To invite a new person, create an invitation link for them. Each person
+        gets their own invitation.
+      </Typography>
       <Grid container justify="flex-end">
         <Grid item xs={12}>
-          <Button fullWidth variant="contained" onClick={props.createInvite}>
-            Create Invitation Page
+          <Button
+            fullWidth
+            color="secondary"
+            variant="contained"
+            onClick={props.createInvite}
+          >
+            Create New Invite Link
           </Button>
         </Grid>
       </Grid>
+      <Typography variant="h2">Already invited</Typography>
+      <Paper className={classes.paper}>
+        <Typography>You have already invited the following people.</Typography>
+        <List dense>{getInvitees()}</List>
+      </Paper>
+      <Typography variant="h2">Your event</Typography>
+      <Paper className={classes.paper}>
+        <ReactMarkdown source={props.event.description} />
+      </Paper>
     </>
   );
 };

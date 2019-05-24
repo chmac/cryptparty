@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
+import ReactMarkdown from "react-markdown";
 import {
   withStyles,
   WithStyles,
@@ -26,7 +27,9 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
   const showPreview = () => {
     return (
       <>
-        <Typography>{event.description}</Typography>
+        <Paper className={classes.paper}>
+          <ReactMarkdown source={event.description} />
+        </Paper>
         <Grid container className={classes.buttonGrid} spacing={2}>
           <Grid item xs={6}>
             <Button
@@ -117,6 +120,7 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
+      padding: theme.spacing(2),
       margin: theme.spacing(2, 0)
     },
     buttonGrid: {
