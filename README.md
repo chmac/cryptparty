@@ -5,7 +5,7 @@ You need `git`, `yarn` and `node` to get this running.
 On a mac, install [homebrew](https://brew.sh/). Then:
 
 - `brew install yarn`
-- `git clone git@github.com:chmac/cryptparty.git`
+- `git clone https://github.com/chmac/cryptparty.git`
 - `cd cryptparty`
 - `cd server`
 - `yarn`
