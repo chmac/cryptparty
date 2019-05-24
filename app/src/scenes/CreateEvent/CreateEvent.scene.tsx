@@ -30,6 +30,9 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
         <Paper className={classes.paper}>
           <ReactMarkdown source={event.description} />
         </Paper>
+        <Typography className={classes.p}>
+          Once published, this event cannot be edited.
+        </Typography>
         <Grid container className={classes.buttonGrid} spacing={2}>
           <Grid item xs={6}>
             <Button
@@ -63,7 +66,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
   const showEditor = () => {
     return (
       <>
-        <Typography>Enter the text in markdown</Typography>
+        <Typography>Enter your event description</Typography>
         <Paper className={classes.paper}>
           <TextField
             id="content"
@@ -74,6 +77,7 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
             onChange={event => setContent(event.target.value)}
             value={event.description}
           />
+          <Typography>Supports markdown</Typography>
         </Paper>
         <Button
           variant="contained"
@@ -91,7 +95,9 @@ const CreateEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Typography variant="h2">Create an event</Typography>
+      <Typography className={classes.heading} variant="h2">
+        Create an event
+      </Typography>
       {isPreview ? showPreview() : showEditor()}
     </>
   );
@@ -121,6 +127,12 @@ const styles = (theme: Theme) =>
     paper: {
       ...theme.mixins.gutters(),
       padding: theme.spacing(2),
+      margin: theme.spacing(2, 0)
+    },
+    heading: {
+      margin: theme.spacing(2, 0)
+    },
+    p: {
       margin: theme.spacing(2, 0)
     },
     buttonGrid: {

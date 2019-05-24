@@ -8,6 +8,7 @@ import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
 import { setIsOwner, loadInvite } from "./ViewInvite.state";
@@ -51,10 +52,19 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
             <Typography variant="h2">
               {props.invite.name}'s invitation
             </Typography>
-            <Typography>
-              This is {props.invite.name}'s invitation page. Send this page to{" "}
-              {props.invite.name} so they can see the invitation.
+            <Typography className={classes.p}>
+              This is {props.invite.name}'s invitation page. Send this link to{" "}
+              {props.invite.name}.
             </Typography>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => {
+                window.history.back();
+              }}
+            >
+              Back to my event
+            </Button>
           </Paper>
         </div>
       </Modal>
@@ -101,7 +111,12 @@ const styles = (theme: Theme) =>
       position: "absolute",
       top: "50%",
       left: "50%",
-      transform: "translate(-50%, -50%)"
+      transform: "translate(-50%, -50%)",
+      width: "80vw",
+      maxWidth: "400px"
+    },
+    p: {
+      margin: theme.spacing(2, 0)
     }
   });
 

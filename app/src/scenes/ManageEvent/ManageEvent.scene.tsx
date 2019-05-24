@@ -58,11 +58,14 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Typography>
-        Save this URL. This is your event. If you lose this page there is no way
-        to recover it.
+      <Typography className={classes.p} color="secondary">
+        Save this link.
       </Typography>
-      <Typography>
+      <Typography className={classes.p}>
+        This link is your event. If you lose this page there is no way to
+        recover it.
+      </Typography>
+      <Typography className={classes.p}>
         To invite a new person, create an invitation link for them. Each person
         gets their own invitation.
       </Typography>
@@ -78,12 +81,18 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
           </Button>
         </Grid>
       </Grid>
-      <Typography variant="h2">Already invited</Typography>
+      <Typography className={classes.heading} variant="h2">
+        Already invited
+      </Typography>
       <Paper className={classes.paper}>
-        <Typography>You have already invited the following people.</Typography>
+        <Typography>
+          You created invite links for the following people.
+        </Typography>
         <List dense>{getInvitees()}</List>
       </Paper>
-      <Typography variant="h2">Your event</Typography>
+      <Typography className={classes.heading} variant="h2">
+        Your event
+      </Typography>
       <Paper className={classes.paper}>
         <ReactMarkdown source={props.event.description} />
       </Paper>
@@ -118,6 +127,12 @@ const styles = (theme: Theme) =>
       ...theme.mixins.gutters(),
       padding: theme.spacing(2),
       margin: theme.spacing(2, 0)
+    },
+    heading: {
+      margin: theme.spacing(3, 0)
+    },
+    p: {
+      margin: theme.spacing(1, 0)
     }
   });
 
