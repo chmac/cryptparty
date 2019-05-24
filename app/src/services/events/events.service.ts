@@ -12,8 +12,14 @@ const crypto = cryptoFactory(Nacl);
 export interface NewEvent {
   description: string;
 }
-export interface Event extends NewEvent {
+export interface EventWithId extends NewEvent {
   _id: string;
+}
+export interface Event extends EventWithId {
+  invitees: {
+    _id: string;
+    name: string;
+  }[];
 }
 
 // @TODO Figure out how to convert gql tags into types
@@ -22,13 +28,23 @@ const GET_EVENT = gql`
     event(_id: $_id) {
       _id
       content
+      invitees {
+        _id
+        content
+      }
     }
   }
 `;
+
+interface EncryptedDoc {
+  _id: string;
+  content: string;
+}
 interface GetEventQueryResult {
   event: {
     _id: string;
     content: string;
+    invitees: EncryptedDoc[];
   };
 }
 
@@ -55,13 +71,29 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
       throw error;
     })
     .then((response: ApolloQueryResult<GetEventQueryResult>) => {
+      const { event } = response.data;
       if (response.data.event === null) {
         throw new Error("Could not load event #RMLJzZ");
       }
       const json = crypto.decrypt(response.data.event.content, keys.secretKey);
 
-      const event: Event = parse(json);
-      return event;
+      const getInvitees = () => {
+        if (event.invitees && event.invitees.length) {
+          return event.invitees.map(doc => {
+            debugger;
+            const json = crypto.decrypt(doc.content, keys.secretKey);
+            const data = parse(json);
+            return data;
+          });
+        } else {
+          return [];
+        }
+      };
+
+      return {
+        ...parse(json),
+        invitees: getInvitees()
+      };
     });
 };
 

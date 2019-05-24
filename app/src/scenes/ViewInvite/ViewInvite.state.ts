@@ -57,7 +57,8 @@ const empty: State = {
     name: "",
     event: {
       _id: "",
-      description: ""
+      description: "",
+      invitees: []
     }
   }
 };

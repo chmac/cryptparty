@@ -5,6 +5,7 @@ import { AppState } from "../../store";
 import { create } from "../../services/invites";
 import { Event, getBySecretKey } from "../../services/events";
 import history from "../../history";
+import ViewInviteScene from "../ViewInvite";
 
 const SET_IS_OWNER = "cryptparty/ManageEvent/SET_IS_OWNER";
 export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {
@@ -98,7 +99,8 @@ const empty: State = {
   secreteKey: "",
   event: {
     _id: "",
-    description: ""
+    description: "",
+    invitees: []
   }
 };
 const reducer: Reducer<State, Actions> = (state = empty, action): State => {
