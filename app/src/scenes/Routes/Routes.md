@@ -2,4 +2,4 @@
 
 - `/` - `scenes/CreateEvent`
 - `/m/:key` - `scenes/ManageEvent`
-- `/v/:key` - `scenes/ViewEvent`
+- `/i/:key/:action?` - `scenes/ViewInvite`

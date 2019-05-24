@@ -60,7 +60,7 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
       }
       const json = crypto.decrypt(response.data.event.content, keys.secretKey);
 
-      const event: Event = JSON.parse(json);
+      const event: Event = parse(json);
       return event;
     });
 };
@@ -80,10 +80,10 @@ interface Keys {
 
 export const create = async (event: NewEvent): Promise<Keys> => {
   const keys = Nacl.box.keyPair();
-  const json = JSON.stringify(event);
-  const encrypted = crypto.encrypt(json, keys.secretKey);
   const secretKey = encodeURLSafe(keys.secretKey);
   const publicKey = encodeURLSafe(keys.publicKey);
+  const json = JSON.stringify({ ...event, _id: publicKey });
+  const encrypted = crypto.encrypt(json, keys.secretKey);
 
   return apollo
     .mutate({
@@ -97,7 +97,7 @@ export const create = async (event: NewEvent): Promise<Keys> => {
       alert(`Error saving Event #SxA5gq ${error.message}`);
       throw error;
     })
-    .then(result => {
+    .then(() => {
       return {
         secretKey,
         publicKey

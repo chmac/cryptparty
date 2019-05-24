@@ -2,7 +2,9 @@ import { Reducer, Action, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import { AppState } from "../../store";
+import { create } from "../../services/invites";
 import { Event, getBySecretKey } from "../../services/events";
+import history from "../../history";
 
 const SET_IS_OWNER = "cryptparty/ManageEvent/SET_IS_OWNER";
 export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {
@@ -48,6 +50,9 @@ export const loadEvent = (
   secretKey: string
 ): ThunkAction<void, AppState, {}, AnyAction> => async (dispatch, getState) => {
   const state = getState();
+  if (!state.ManageEvent.isLoading) {
+    return;
+  }
   try {
     const event = await getBySecretKey(secretKey);
     dispatch(_loadEvent(secretKey, event));
@@ -56,21 +61,41 @@ export const loadEvent = (
   }
 };
 
+export const createInvite = (): ThunkAction<void, AppState, {}, AnyAction> => (
+  dispatch,
+  getState
+) => {
+  const state = getState();
+  // Ask the user for a name
+  const name = prompt("Who do you want to invite?");
+  if (name === null) {
+    return;
+  }
+  // Create the invitation
+  create(name, state.ManageEvent.event).then(keys => {
+    // Redirect to the new invitation URL
+    history.push(`/i/${keys.secretKey}/o`);
+  });
+};
+
 export type Actions = SetIsOwnerAction | LoadEventErrorAction | LoadEventAction;
 
 interface State {
   isOwner: boolean;
   isLoading: boolean;
-  description: string;
   isError: boolean;
   error: string;
+  event: Event;
 }
 const empty: State = {
   isOwner: false,
   isLoading: true,
-  description: "",
   isError: false,
-  error: ""
+  error: "",
+  event: {
+    _id: "",
+    description: ""
+  }
 };
 const reducer: Reducer<State, Actions> = (state = empty, action): State => {
   switch (action.type) {
@@ -81,7 +106,7 @@ const reducer: Reducer<State, Actions> = (state = empty, action): State => {
       return {
         ...state,
         isLoading: false,
-        description: action.payload.event.description
+        event: action.payload.event
       };
     }
     case LOAD_EVENT_ERROR: {

@@ -1,24 +1,30 @@
 import React, { useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, Redirect } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
-import { setIsOwner, loadEvent, createInvite } from "./ManageEvent.state";
+import { setIsOwner, loadInvite } from "./ViewInvite.state";
 
-const ManageEvent: React.FC<Props> = (props: Props) => {
+const ViewInvite: React.FC<Props> = (props: Props) => {
   const { match, classes } = props;
-  const { key } = match.params;
+  const { key, action } = match.params;
 
   useEffect(() => {
-    props.loadEvent(key);
+    props.loadInvite(key);
   }, [key]);
+
+  if (!!action && action === "o") {
+    props.setIsOwner(true);
+    // Remove the trailing `/o` part from the URL. This allows the event owner
+    // to share this URL from their browser directly, and the recipient will not
+    // see the "share this page" message.
+    return <Redirect to={`/i/${key}`} />;
+  }
 
   if (props.isLoading) {
     return <div>Loading</div>;
@@ -35,33 +41,24 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
     );
   }
 
+  const showOwnerMesage = () => {
+    return <Typography variant="h2">Send Invite</Typography>;
+  };
+
   return (
     <>
-      <Paper>
-        <Typography variant="h2">Invite Friends</Typography>
-        <Typography className={classes.paper}>
-          {props.event.description}
-        </Typography>
+      {props.isOwner ? showOwnerMesage() : null}
+      <Typography variant="h2">Dear {props.invite.name}</Typography>
+      <Paper className={classes.paper}>
+        <Typography>{props.invite.event.description}</Typography>
       </Paper>
-      <Grid container justify="flex-end">
-        <Grid item xs={12}>
-          <Button fullWidth variant="contained" onClick={props.createInvite}>
-            Create Invite Page
-          </Button>
-        </Grid>
-      </Grid>
     </>
   );
 };
 
 const mapStateToProps = (state: AppState) => {
-  const { ManageEvent } = state;
-  return ManageEvent;
-  //   return {
-  //     isOwner: state.ManageEvent.isOwner,
-  //     isLoading: state.ManageEvent.isLoading,
-  //     content: state.ManageEvent.content
-  //   };
+  const { ViewInvite } = state;
+  return ViewInvite;
 };
 
 const mapDispatchToProps = (
@@ -71,11 +68,8 @@ const mapDispatchToProps = (
     setIsOwner: (isOwner: boolean) => {
       dispatch(setIsOwner(isOwner));
     },
-    loadEvent: (secretKey: string) => {
-      dispatch(loadEvent(secretKey));
-    },
-    createInvite: () => {
-      dispatch(createInvite());
+    loadInvite: (secretKey: string) => {
+      dispatch(loadInvite(secretKey));
     }
   };
 };
@@ -84,6 +78,7 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
+      padding: theme.spacing(2, 0),
       margin: theme.spacing(2, 0)
     }
   });
@@ -92,6 +87,7 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 interface RouteParams {
   key: string;
+  action: string;
 }
 type Props = StateProps &
   DispatchProps &
@@ -101,4 +97,4 @@ type Props = StateProps &
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ManageEvent));
+)(withStyles(styles)(ViewInvite));

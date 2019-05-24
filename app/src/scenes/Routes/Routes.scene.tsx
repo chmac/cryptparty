@@ -8,6 +8,7 @@ import history from "../../history";
 import Bar from "../Bar";
 import CreateEvent from "../CreateEvent";
 import ManageEvent from "../ManageEvent";
+import ViewInvite from "../ViewInvite";
 
 const Routes: React.FC<Props> = (props: Props) => {
   const { classes } = props;
@@ -18,7 +19,8 @@ const Routes: React.FC<Props> = (props: Props) => {
       <Bar />
       <Container className={classes.container}>
         <Route exact path="/" component={CreateEvent} />
-        <Route path="/m/:key/:action?" component={ManageEvent} />
+        <Route path="/m/:key" component={ManageEvent} />
+        <Route path="/i/:key/:action?" component={ViewInvite} />
       </Container>
     </Router>
   );
