@@ -2,7 +2,7 @@ import { Reducer, Action, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 
 import { AppState } from "../../store";
-import { create } from "../../services/invites";
+import { create, Invitee } from "../../services/invites";
 import { Event, getBySecretKey } from "../../services/events";
 import history from "../../history";
 import ViewInviteScene from "../ViewInvite";
@@ -62,6 +62,19 @@ export const loadEvent = (
   }
 };
 
+const CREATE_INVITEE = "cryptparty/ManageEvent/CREATE_INVITEE";
+export interface CreateInviteeAction extends Action<typeof CREATE_INVITEE> {
+  payload: {
+    invitee: Invitee;
+  };
+}
+const _createInvitee = (invitee: Invitee): CreateInviteeAction => ({
+  type: CREATE_INVITEE,
+  payload: {
+    invitee
+  }
+});
+
 export const createInvite = (): ThunkAction<void, AppState, {}, AnyAction> => (
   dispatch,
   getState
@@ -74,14 +87,21 @@ export const createInvite = (): ThunkAction<void, AppState, {}, AnyAction> => (
   }
   // Create the invitation
   create(name, state.ManageEvent.event, state.ManageEvent.secreteKey).then(
-    keys => {
+    result => {
+      const { keys, invitee } = result;
+      // Dispatch an action to save this invitee in our list
+      dispatch(_createInvitee(invitee));
       // Redirect to the new invitation URL
       history.push(`/i/${keys.secretKey}/o`);
     }
   );
 };
 
-export type Actions = SetIsOwnerAction | LoadEventErrorAction | LoadEventAction;
+export type Actions =
+  | SetIsOwnerAction
+  | LoadEventErrorAction
+  | LoadEventAction
+  | CreateInviteeAction;
 
 interface State {
   isOwner: boolean;
@@ -122,6 +142,15 @@ const reducer: Reducer<State, Actions> = (state = empty, action): State => {
         isLoading: false,
         isError: true,
         error: action.payload.error
+      };
+    }
+    case CREATE_INVITEE: {
+      return {
+        ...state,
+        event: {
+          ...state.event,
+          invitees: [...state.event.invitees, action.payload.invitee]
+        }
       };
     }
   }

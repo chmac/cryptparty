@@ -102,11 +102,16 @@ interface Keys {
   publicKey: string;
 }
 
+interface CreateResponse {
+  keys: Keys;
+  invitee: Invitee;
+}
+
 export const create = async (
   name: string,
   event: Event,
   ownerKey: string
-): Promise<Keys> => {
+): Promise<CreateResponse> => {
   // Build a key for the new recipient
   const keys = Nacl.box.keyPair();
   const secretKey = encodeURLSafe(keys.secretKey);
@@ -139,10 +144,17 @@ export const create = async (
       alert(`Error saving Event #SxA5gq ${error.message}`);
       throw error;
     })
-    .then(result => {
+    .then(() => {
       return {
-        secretKey,
-        publicKey
+        invitee: {
+          _id: publicKey,
+          eventId: event._id,
+          name
+        },
+        keys: {
+          secretKey,
+          publicKey
+        }
       };
     });
 };
