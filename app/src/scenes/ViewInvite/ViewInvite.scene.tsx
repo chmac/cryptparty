@@ -53,7 +53,7 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
               {props.invite.name}'s invitation
             </Typography>
             <Typography className={classes.p}>
-              This is {props.invite.name}'s invitation page. Send this link to{" "}
+              This is {props.invite.name}'s invitation link. Send this link to{" "}
               {props.invite.name}.
             </Typography>
             <Button
