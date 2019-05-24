@@ -82,7 +82,7 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
           return event.invitees.map(doc => {
             const json = crypto.decrypt(doc.content, keys.secretKey);
             const data = parse(json);
-            return data;
+            return { ...data, _id: doc._id };
           });
         } else {
           return [];
