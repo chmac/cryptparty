@@ -69,7 +69,7 @@ export const getBySecretKey = async (secretKey: string): Promise<Invite> => {
       }
       const json = crypto.decrypt(response.data.invite.content, keys.secretKey);
 
-      const invite: Invite = JSON.parse(json);
+      const invite: Invite = parse(json);
       return invite;
     });
 };
