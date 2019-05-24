@@ -69,11 +69,6 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
 const mapStateToProps = (state: AppState) => {
   const { ManageEvent } = state;
   return ManageEvent;
-  //   return {
-  //     isOwner: state.ManageEvent.isOwner,
-  //     isLoading: state.ManageEvent.isLoading,
-  //     content: state.ManageEvent.content
-  //   };
 };
 
 const mapDispatchToProps = (
