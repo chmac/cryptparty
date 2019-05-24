@@ -11,12 +11,12 @@ import { AppState } from "../../store";
 import { setIsOwner, loadInvite } from "./ViewInvite.state";
 
 const ViewInvite: React.FC<Props> = (props: Props) => {
-  const { match, classes } = props;
+  const { match, classes, loadInvite } = props;
   const { key, action } = match.params;
 
   useEffect(() => {
-    props.loadInvite(key);
-  }, [key]);
+    loadInvite(key);
+  }, [loadInvite, key]);
 
   if (!!action && action === "o") {
     props.setIsOwner(true);

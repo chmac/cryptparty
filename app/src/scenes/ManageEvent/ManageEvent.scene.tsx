@@ -13,12 +13,12 @@ import { AppState } from "../../store";
 import { setIsOwner, loadEvent, createInvite } from "./ManageEvent.state";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
-  const { match, classes } = props;
+  const { match, classes, loadEvent } = props;
   const { key } = match.params;
 
   useEffect(() => {
-    props.loadEvent(key);
-  }, [key]);
+    loadEvent(key);
+  }, [loadEvent, key]);
 
   if (props.isLoading) {
     return <div>Loading</div>;
