@@ -3,7 +3,6 @@ import { ThunkAction } from "redux-thunk";
 
 import { Invite, getBySecretKey } from "../../services/invites";
 import { AppState } from "../../store";
-import { stat } from "fs";
 
 const SET_IS_OWNER = "cryptparty/ViewInvite/SET_IS_OWNER";
 export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {
