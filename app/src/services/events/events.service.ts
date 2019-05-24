@@ -80,7 +80,6 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
       const getInvitees = () => {
         if (event.invitees && event.invitees.length) {
           return event.invitees.map(doc => {
-            debugger;
             const json = crypto.decrypt(doc.content, keys.secretKey);
             const data = parse(json);
             return data;
