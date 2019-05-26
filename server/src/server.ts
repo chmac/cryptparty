@@ -40,10 +40,7 @@ class Server {
   start(cb = () => null) {
     const port = process.env.PORT || 4000;
 
-    this.server = this.app.listen(port, err => {
-      if (err) {
-        throw err;
-      }
+    this.server = this.app.listen(port, () => {
       // tslint:disable-next-line
       console.log(`🔥 Server running on port ${port}...`); // eslint-disable-line
       cb();
