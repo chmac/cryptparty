@@ -65,10 +65,11 @@ const factory = (dbName: string) => {
   return {
     insert,
     findById,
-    findByEventId
+    findByEventId: dbName === "invitees" ? findByEventId : undefined
   };
 };
 
 export const events = factory("events");
 export const invites = factory("invites");
 export const invitees = factory("invitees");
+export const replies = factory("replies");
