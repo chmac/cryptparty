@@ -17,7 +17,6 @@ export const typeDef = `
     }
 
     type Reply {
-        _id: ID!
         content: String
     }
 
