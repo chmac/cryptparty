@@ -67,11 +67,11 @@ export const findByEventId = async (eventId: string) => {
 
 export const findByInviteeId = async (inviteeId: string) => {
   return new Promise((resolve, reject) => {
-    db.find({ inviteeId }, (err, docs: EncryptedDoc[]) => {
+    db.findOne({ inviteeId }, (err, doc: EncryptedDoc) => {
       if (err) {
         reject(err);
       } else {
-        resolve(docs);
+        resolve(doc);
       }
     });
   });

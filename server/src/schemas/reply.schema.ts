@@ -45,7 +45,8 @@ export const resolvers = {
   },
   Invite: {
     async reply(invite) {
-      return findByInviteeId(invite._id);
+      const reply = await findByInviteeId(invite._id);
+      return !!reply ? reply : null;
     }
   },
   Mutation: {
