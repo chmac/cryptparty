@@ -3,7 +3,7 @@ import { insert, findByEventId, findByInviteeId } from "../data/replies.data";
 export const typeDef = `
     input ReplyInput {
       eventId: ID!
-      inviteId: String!
+      inviteId: ID!
       content: String!
     }
 
