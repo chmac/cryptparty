@@ -6,26 +6,28 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 const Bar: React.FC<Props> = (props: Props) => {
-  // const { classes } = props;
+  const { classes } = props;
 
   return (
     <AppBar position="static" color="default">
-      <Toolbar>
+      {/* <Toolbar> */}
+      <Box className={classes.inner}>
         <Typography variant="h6" component="h1" color="inherit">
           Zero Knowledge Party
-          <Typography variant="h6" component="h2" color="inherit">
-            <Box fontSize="0.8em">Encrypted parties since 2020</Box>
-          </Typography>
         </Typography>
-      </Toolbar>
+        <Typography variant="h6" component="h2" color="inherit">
+          <Box fontSize="0.8em">Encrypted parties since 2020</Box>
+        </Typography>
+      </Box>
+      {/* </Toolbar> */}
     </AppBar>
   );
 };
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1
+    inner: {
+      ...theme.mixins.gutters()
     }
   });
 
