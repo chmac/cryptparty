@@ -106,7 +106,9 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
     return (
       <>
         <Typography className={classes.p}>
-          {props.invite.reply ? "Update your reply" : "Are you coming?"}
+          {props.invite.reply !== undefined
+            ? "Update your reply"
+            : "Are you coming?"}
         </Typography>
         <Grid container className={classes.buttonGrid} spacing={2}>
           <Grid item xs={4}>
