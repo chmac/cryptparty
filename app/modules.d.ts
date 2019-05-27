@@ -26,6 +26,10 @@ declare module "chainpad-crypto" {
     Nacl: {
       box: {
         keyPair: keyPair
+      },
+      util: {
+        encodeBase64(input: Uint8Array): string;,
+        decodeBase64(input: string): Uint8Array;
       }
     },
 
@@ -56,6 +60,10 @@ declare module "tweetnacl" {
   const module = {
     box: {
       keyPair: keyPair
+    },
+    util: {
+      encodeBase64(input: Uint8Array): string;,
+      decodeBase64(input: string): Uint8Array;
     }
   };
 
