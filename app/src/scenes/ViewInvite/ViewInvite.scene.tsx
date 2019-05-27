@@ -7,17 +7,20 @@ import ReactMarkdown from "react-markdown";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
-import { setIsOwner, loadInvite } from "./ViewInvite.state";
+import { setIsOwner, loadInvite, sendReply } from "./ViewInvite.state";
+import { Reply } from "../../services/replies";
 
 const ViewInvite: React.FC<Props> = (props: Props) => {
   const { match, classes, loadInvite } = props;
   const { key, action } = match.params;
 
   useEffect(() => {
+    console.log("ViewInvite.scene useEffect #vXShRN");
     loadInvite(key);
   }, [loadInvite, key]);
 
@@ -78,6 +81,45 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
       <Paper className={classes.paper}>
         <ReactMarkdown source={props.invite.event.description} />
       </Paper>
+      <Typography className={classes.p}>Are you coming?</Typography>
+      <Grid container className={classes.buttonGrid} spacing={2}>
+        <Grid item xs={4}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            onClick={() => {
+              props.sendRepy(Reply.NO);
+            }}
+          >
+            No
+          </Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="default"
+            onClick={() => {
+              props.sendRepy(Reply.MAYBE);
+            }}
+          >
+            Maybe
+          </Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="secondary"
+            onClick={() => {
+              props.sendRepy(Reply.YES);
+            }}
+          >
+            Yes
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 };
@@ -96,6 +138,9 @@ const mapDispatchToProps = (
     },
     loadInvite: (secretKey: string) => {
       dispatch(loadInvite(secretKey));
+    },
+    sendRepy: (reply: Reply) => {
+      dispatch(sendReply(reply));
     }
   };
 };
@@ -117,6 +162,9 @@ const styles = (theme: Theme) =>
     },
     p: {
       margin: theme.spacing(2, 0)
+    },
+    buttonGrid: {
+      ...theme.mixins.gutters()
     }
   });
 

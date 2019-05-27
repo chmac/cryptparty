@@ -2,19 +2,21 @@
 import cryptoFactory from "chainpad-crypto";
 import Nacl from "tweetnacl";
 import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
+import { gql, ApolloQueryResult } from "apollo-boost";
 
 import apollo from "../../apollo";
-import { gql, ApolloQueryResult } from "apollo-boost";
-import { Event } from "../events";
+import { Event, EventWithId } from "../events";
+import { Reply } from "../replies";
 
 const crypto = cryptoFactory(Nacl);
 
 export interface NewInvite {
   name: string;
-  event: Event;
+  event: EventWithId;
 }
 export interface Invite extends NewInvite {
   _id: string;
+  reply?: Reply;
 }
 
 export interface NewInvitee {
@@ -31,6 +33,9 @@ const GET_INVITE = gql`
     invite(_id: $_id) {
       _id
       content
+      reply {
+        content
+      }
     }
   }
 `;
@@ -38,6 +43,9 @@ interface GetEventQueryResult {
   invite: {
     _id: string;
     content: string;
+    reply?: {
+      content: string;
+    };
   };
 }
 
@@ -68,9 +76,21 @@ export const getBySecretKey = async (secretKey: string): Promise<Invite> => {
         throw new Error("Could not load invite #Yt3UxI");
       }
       const json = crypto.decrypt(response.data.invite.content, keys.secretKey);
+      const baseInvite: Invite = parse(json);
 
-      const invite: Invite = parse(json);
-      return invite;
+      // If there is no reply, then return now, nothing else to do
+      if (!response.data.invite.reply) {
+        return baseInvite;
+      }
+
+      debugger;
+      const replyJson = crypto.decrypt(
+        response.data.invite.reply.content,
+        keys.secretKey
+      );
+      const reply = parse(json);
+
+      return { ...baseInvite, reply };
     });
 };
 
