@@ -49,11 +49,7 @@ const _loadEvent = (secretKey: string, event: Event): LoadEventAction => ({
 });
 export const loadEvent = (
   secretKey: string
-): ThunkAction<void, AppState, {}, AnyAction> => async (dispatch, getState) => {
-  const state = getState();
-  if (!state.ManageEvent.isLoading) {
-    return;
-  }
+): ThunkAction<void, AppState, {}, AnyAction> => async dispatch => {
   try {
     const event = await getBySecretKey(secretKey);
     dispatch(_loadEvent(secretKey, event));
