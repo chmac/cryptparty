@@ -7,6 +7,7 @@ import { gql, ApolloQueryResult } from "apollo-boost";
 import apollo from "../../apollo";
 import { Event, EventWithId } from "../events";
 import { Reply } from "../replies";
+import { decryptFromTwoKeys } from "../encryption";
 
 const crypto = cryptoFactory(Nacl);
 
@@ -78,19 +79,22 @@ export const getBySecretKey = async (secretKey: string): Promise<Invite> => {
       const json = crypto.decrypt(response.data.invite.content, keys.secretKey);
       const baseInvite: Invite = parse(json);
 
+      const inviteWithId = { ...baseInvite, _id: response.data.invite._id };
+
       // If there is no reply, then return now, nothing else to do
       if (!response.data.invite.reply) {
-        return baseInvite;
+        return inviteWithId;
       }
 
-      debugger;
-      const replyJson = crypto.decrypt(
-        response.data.invite.reply.content,
-        keys.secretKey
+      const replyJson = decryptFromTwoKeys(
+        inviteWithId.event._id,
+        secretKey,
+        response.data.invite.reply.content
       );
-      const reply = parse(json);
+      // @TODO Figure out what we want `reply` to look like
+      const reply: { reply: Reply } = parse(replyJson);
 
-      return { ...baseInvite, reply };
+      return { ...inviteWithId, reply: reply.reply };
     });
 };
 

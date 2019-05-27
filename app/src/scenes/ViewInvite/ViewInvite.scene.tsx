@@ -89,7 +89,7 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
   };
 
   const showReplyStatus = () => {
-    if (!props.invite.reply) {
+    if (props.invite.reply === undefined) {
       return (
         <Typography className={classes.p}>You have not yet replied.</Typography>
       );

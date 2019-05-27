@@ -1,8 +1,15 @@
 import { gql, ApolloQueryResult } from "apollo-boost";
+/// <reference path="../../../modules.d.ts"/>
+import cryptoFactory from "chainpad-crypto";
 import Nacl from "tweetnacl";
 import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
 
 import apollo from "../../apollo";
+import { encryptToTwoKeys } from "../encryption";
+
+// const { Curve, Nacl } = crypto;
+const crypto = cryptoFactory(Nacl);
+const { Curve } = crypto;
 
 export enum Reply {
   NO = 0,
@@ -17,6 +24,9 @@ interface SendReplyMutationResult {
   };
 }
 
+const urlSafeToNacl = (key: string) =>
+  Nacl.util.encodeBase64(decodeURLSafe(key));
+
 const SEND_REPLY_MUTATION = gql`
   mutation SendReplyMutation($eventId: ID!, $inviteId: ID!, $content: String!) {
     sendReply(
@@ -29,19 +39,28 @@ const SEND_REPLY_MUTATION = gql`
 
 export const sendReply = async (
   eventId: string,
+  inviteId: string,
   secretKey: string,
   reply: Reply
 ) => {
-  // TODO Generate inviteeId from secretKey
-  // TODO Construct encrypted content
+  const unecnrypted = JSON.stringify({ reply });
+  const content = encryptToTwoKeys(
+    // Set the public key (their key) as the `eventId` because this is event
+    // owner's public key.
+    eventId,
+    // Use our secret key as "my key" so we can also read the encrypted value of
+    // the reply
+    secretKey,
+    unecnrypted
+  );
 
   return apollo
     .mutate({
       mutation: SEND_REPLY_MUTATION,
       variables: {
         eventId,
-        inviteId: "def",
-        content: "encrypted coming soon"
+        inviteId,
+        content
       }
     })
     .catch(error => {

@@ -54,9 +54,15 @@ const _sendReply = (reply: Reply): SendReplyAction => ({
 });
 export const sendReply = (
   reply: Reply
-): ThunkAction<void, AppState, {}, AnyAction> => dispatch => {
+): ThunkAction<void, AppState, {}, AnyAction> => (dispatch, getState) => {
+  const state = getState();
   // Send the reply
-  sendReplyToServer("an event", "something", reply).then(response => {
+  sendReplyToServer(
+    state.ViewInvite.invite.event._id,
+    state.ViewInvite.invite._id,
+    state.ViewInvite.secretKey,
+    reply
+  ).then(response => {
     // Record success in state
     dispatch(_sendReply(reply));
   });
