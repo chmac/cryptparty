@@ -15,6 +15,20 @@ import { AppState } from "../../store";
 import { setIsOwner, loadInvite, sendReply } from "./ViewInvite.state";
 import { Reply } from "../../services/replies";
 
+const replyToString = (reply: Reply): string => {
+  switch (reply) {
+    case Reply.YES: {
+      return "Yes";
+    }
+    case Reply.NO: {
+      return "No";
+    }
+    case Reply.MAYBE: {
+      return "Maybe";
+    }
+  }
+};
+
 const ViewInvite: React.FC<Props> = (props: Props) => {
   const { match, classes, loadInvite } = props;
   const { key, action } = match.params;
@@ -74,6 +88,68 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
     );
   };
 
+  const showReplyStatus = () => {
+    if (!props.invite.reply) {
+      return (
+        <Typography className={classes.p}>You have not yet replied.</Typography>
+      );
+    }
+
+    return (
+      <Typography className={classes.p}>
+        You have replied: {replyToString(props.invite.reply)}
+      </Typography>
+    );
+  };
+
+  const showReplyButtons = () => {
+    return (
+      <>
+        <Typography className={classes.p}>
+          {props.invite.reply ? "Update your reply" : "Are you coming?"}
+        </Typography>
+        <Grid container className={classes.buttonGrid} spacing={2}>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="primary"
+              onClick={() => {
+                props.sendRepy(Reply.NO);
+              }}
+            >
+              No
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="default"
+              onClick={() => {
+                props.sendRepy(Reply.MAYBE);
+              }}
+            >
+              Maybe
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="secondary"
+              onClick={() => {
+                props.sendRepy(Reply.YES);
+              }}
+            >
+              Yes
+            </Button>
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
+
   return (
     <>
       {props.isOwner ? showOwnerMesage() : null}
@@ -81,45 +157,8 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
       <Paper className={classes.paper}>
         <ReactMarkdown source={props.invite.event.description} />
       </Paper>
-      <Typography className={classes.p}>Are you coming?</Typography>
-      <Grid container className={classes.buttonGrid} spacing={2}>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            fullWidth
-            color="primary"
-            onClick={() => {
-              props.sendRepy(Reply.NO);
-            }}
-          >
-            No
-          </Button>
-        </Grid>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            fullWidth
-            color="default"
-            onClick={() => {
-              props.sendRepy(Reply.MAYBE);
-            }}
-          >
-            Maybe
-          </Button>
-        </Grid>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            fullWidth
-            color="secondary"
-            onClick={() => {
-              props.sendRepy(Reply.YES);
-            }}
-          >
-            Yes
-          </Button>
-        </Grid>
-      </Grid>
+      {showReplyStatus()}
+      {showReplyButtons()}
     </>
   );
 };
