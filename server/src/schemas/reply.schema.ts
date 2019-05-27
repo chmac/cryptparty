@@ -39,11 +39,13 @@ interface SetReplyArgs {
 
 export const resolvers = {
   Event: {
+    // @TODO Only return the latest reply
     async replies(event) {
       return findByEventId(event._id);
     }
   },
   Invite: {
+    // @TODO Only return the latest reply
     async reply(invite) {
       const reply = await findByInviteId(invite._id);
       console.log("Invite.reply #ri6KWB", invite, reply);
