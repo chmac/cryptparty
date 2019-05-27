@@ -1,4 +1,4 @@
-import { insert, findByEventId, findByInviteeId } from "../data/replies.data";
+import { insert, findByEventId, findByInviteId } from "../data/replies.data";
 
 export const typeDef = `
     input ReplyInput {
@@ -32,7 +32,7 @@ export const typeDef = `
 interface SetReplyArgs {
   reply: {
     eventId: string;
-    inviteeId: string;
+    inviteId: string;
     content: string;
   };
 }
@@ -45,18 +45,20 @@ export const resolvers = {
   },
   Invite: {
     async reply(invite) {
-      const reply = await findByInviteeId(invite._id);
+      const reply = await findByInviteId(invite._id);
+      console.log("Invite.reply #ri6KWB", invite, reply);
       return !!reply ? reply : null;
     }
   },
   Mutation: {
     async sendReply(root, args: SetReplyArgs) {
-      const { eventId, inviteeId, content } = args.reply;
+      const { eventId, inviteId, content } = args.reply;
       const reply = await insert({
         eventId,
-        inviteeId,
+        inviteId,
         content
       });
+      console.log("sendReply mutation #VBe1ZW", reply);
       return {
         sucesss: true,
         reply

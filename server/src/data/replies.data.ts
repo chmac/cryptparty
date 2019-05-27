@@ -5,7 +5,7 @@ const dbName = "replies";
 
 export interface InputEncryptedDoc {
   eventId: string;
-  inviteeId: string;
+  inviteId: string;
   content: string;
 }
 
@@ -13,7 +13,7 @@ export interface EncryptedDoc extends InputEncryptedDoc {
   _id: string;
 }
 
-const db = new Datastore({ filename: `../../data/${dbName}.db` });
+const db = new Datastore({ filename: `../data/${dbName}.db` });
 
 db.loadDatabase(err => {
   if (err) {
@@ -65,9 +65,9 @@ export const findByEventId = async (eventId: string) => {
   });
 };
 
-export const findByInviteeId = async (inviteeId: string) => {
+export const findByInviteId = async (inviteId: string) => {
   return new Promise((resolve, reject) => {
-    db.findOne({ inviteeId }, (err, doc: EncryptedDoc) => {
+    db.findOne({ inviteId }, (err, doc: EncryptedDoc) => {
       if (err) {
         reject(err);
       } else {
