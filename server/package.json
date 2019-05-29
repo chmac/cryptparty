@@ -20,6 +20,7 @@
     "debug": "NODE_ENV='debug' nodemon"
   },
   "dependencies": {
+    "@types/graphql": "^14.2.0",
     "@types/nedb": "^1.8.7",
     "apollo-server": "^2.5.0",
     "apollo-server-express": "^2.5.0",
