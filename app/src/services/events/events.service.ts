@@ -5,6 +5,8 @@ import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
 
 import apollo from "../../apollo";
 import { gql, ApolloQueryResult } from "apollo-boost";
+import { Reply } from "../replies";
+import { decryptFromTwoKeys } from "../encryption";
 
 const crypto = cryptoFactory(Nacl);
 
@@ -19,6 +21,9 @@ export interface Event extends EventWithId {
   invitees: {
     _id: string;
     name: string;
+    reply?: {
+      reply: Reply;
+    };
   }[];
 }
 
@@ -31,20 +36,26 @@ const GET_EVENT = gql`
       invitees {
         _id
         content
+        reply {
+          content
+        }
       }
     }
   }
 `;
 
-interface EncryptedDoc {
+interface EncryptedInvitee {
   _id: string;
   content: string;
+  reply?: {
+    content: string;
+  };
 }
 interface GetEventQueryResult {
   event: {
     _id: string;
     content: string;
-    invitees: EncryptedDoc[];
+    invitees?: EncryptedInvitee[];
   };
 }
 
@@ -64,7 +75,8 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
       query: GET_EVENT,
       variables: {
         _id: encodeURLSafe(keys.publicKey)
-      }
+      },
+      fetchPolicy: "network-only"
     })
     .catch(error => {
       alert(`Error getting event #QA3Ekl ${error.message}`);
@@ -82,7 +94,21 @@ export const getBySecretKey = async (secretKey: string): Promise<Event> => {
           return event.invitees.map(doc => {
             const json = crypto.decrypt(doc.content, keys.secretKey);
             const data = parse(json);
-            return { ...data, _id: doc._id };
+            const invitee = { ...data, _id: doc._id };
+
+            // If there is no reply, return `invitee` at this point
+            if (!doc.reply) {
+              return { ...invitee, reply: null };
+            }
+
+            // Decrypt the reply
+            const replyJson = decryptFromTwoKeys(
+              doc._id,
+              secretKey,
+              doc.reply.content
+            );
+            const reply = JSON.parse(replyJson);
+            return { ...invitee, reply };
           });
         } else {
           return [];

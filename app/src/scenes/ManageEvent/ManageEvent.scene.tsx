@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
 import { setIsOwner, loadEvent, createInvite } from "./ManageEvent.state";
+import { replyToString } from "../../services/replies";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
   const { match, classes, loadEvent } = props;
@@ -50,7 +51,12 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
     return props.event.invitees.map(invitee => {
       return (
         <ListItem key={invitee._id}>
-          <ListItemText>{invitee.name}</ListItemText>
+          <ListItemText>
+            {invitee.name} -{" "}
+            {!!invitee.reply
+              ? `replied ${replyToString(invitee.reply.reply)}`
+              : "no reply"}
+          </ListItemText>
         </ListItem>
       );
     });
