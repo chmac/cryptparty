@@ -5,7 +5,6 @@ import { AppState } from "../../store";
 import { create, Invitee } from "../../services/invites";
 import { Event, getBySecretKey } from "../../services/events";
 import history from "../../history";
-import ViewInviteScene from "../ViewInvite";
 
 const SET_IS_OWNER = "cryptparty/ManageEvent/SET_IS_OWNER";
 export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {

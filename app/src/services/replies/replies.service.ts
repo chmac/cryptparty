@@ -1,15 +1,7 @@
 import { gql, ApolloQueryResult } from "apollo-boost";
-/// <reference path="../../../modules.d.ts"/>
-import cryptoFactory from "chainpad-crypto";
-import Nacl from "tweetnacl";
-import { encodeURLSafe, decodeURLSafe } from "@stablelib/base64";
 
 import apollo from "../../apollo";
 import { encryptToTwoKeys } from "../encryption";
-
-// const { Curve, Nacl } = crypto;
-const crypto = cryptoFactory(Nacl);
-const { Curve } = crypto;
 
 export enum Reply {
   NO = 0,
@@ -37,9 +29,6 @@ interface SendReplyMutationResult {
     _id: string;
   };
 }
-
-const urlSafeToNacl = (key: string) =>
-  Nacl.util.encodeBase64(decodeURLSafe(key));
 
 const SEND_REPLY_MUTATION = gql`
   mutation SendReplyMutation($eventId: ID!, $inviteId: ID!, $content: String!) {
