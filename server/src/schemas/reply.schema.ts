@@ -20,8 +20,8 @@ export const typeDef = `
         content: String
     }
 
-    extend type Event {
-        replies: [Reply!]
+    extend type Invitee {
+        reply: Reply
     }
 
     extend type Invite {
@@ -38,17 +38,20 @@ interface SetReplyArgs {
 }
 
 export const resolvers = {
-  Event: {
-    // @TODO Only return the latest reply
-    async replies(event) {
-      return findByEventId(event._id);
-    }
-  },
   Invite: {
     // @TODO Only return the latest reply
     async reply(invite) {
       const reply = await findByInviteId(invite._id);
-      console.log("Invite.reply #ri6KWB", invite, reply);
+      return !!reply ? reply : null;
+    }
+  },
+  Invitee: {
+    // @TODO Only return the latest reply
+    async reply(invitee) {
+      // NOTE: An `Invitee` has the same ID as its corresponding `Invite`. The
+      // difference is that tht `Invite` is encrypted so only its secret key can
+      // decrypt, and contains a full copy of the `Event`.
+      const reply = await findByInviteId(invitee._id);
       return !!reply ? reply : null;
     }
   },
