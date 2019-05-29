@@ -17,6 +17,20 @@ export enum Reply {
   MAYBE = 2
 }
 
+export const replyToString = (reply: Reply): string => {
+  switch (reply) {
+    case Reply.YES: {
+      return "Yes";
+    }
+    case Reply.NO: {
+      return "No";
+    }
+    case Reply.MAYBE: {
+      return "Maybe";
+    }
+  }
+};
+
 interface SendReplyMutationResult {
   result: boolean;
   reply: {

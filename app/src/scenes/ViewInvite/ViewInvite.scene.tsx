@@ -13,21 +13,7 @@ import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
 import { setIsOwner, loadInvite, sendReply } from "./ViewInvite.state";
-import { Reply } from "../../services/replies";
-
-const replyToString = (reply: Reply): string => {
-  switch (reply) {
-    case Reply.YES: {
-      return "Yes";
-    }
-    case Reply.NO: {
-      return "No";
-    }
-    case Reply.MAYBE: {
-      return "Maybe";
-    }
-  }
-};
+import { replyToString, Reply } from "../../services/replies";
 
 const ViewInvite: React.FC<Props> = (props: Props) => {
   const { match, classes, loadInvite } = props;
