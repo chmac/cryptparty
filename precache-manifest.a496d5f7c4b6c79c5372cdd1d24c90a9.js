@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a7cf473645b720e3ab79a47d0b655bb4",
+    "revision": "8ced59798667aaa954c60cf6ec5fc255",
     "url": "/cryptparty/index.html"
   },
   {
-    "revision": "c2d91eac20f17eae5159",
+    "revision": "c0d4205057a65aef6207",
     "url": "/cryptparty/static/css/main.5ecd60fb.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/cryptparty/static/js/2.39ad7636.chunk.js"
   },
   {
-    "revision": "c2d91eac20f17eae5159",
-    "url": "/cryptparty/static/js/main.c4693f75.chunk.js"
+    "revision": "c0d4205057a65aef6207",
+    "url": "/cryptparty/static/js/main.39e0c2db.chunk.js"
   },
   {
     "revision": "2e0816e7ba38a185a151",
