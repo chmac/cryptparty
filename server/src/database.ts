@@ -1,5 +1,7 @@
 import Datastore from "nedb";
 
+const DB_PATH = process.env.DB_PATH || "../data";
+
 export interface EncryptedDoc {
   _id: string;
   eventId?: string;
@@ -7,7 +9,7 @@ export interface EncryptedDoc {
 }
 
 const factory = (dbName: string) => {
-  const db = new Datastore({ filename: `../data/${dbName}.db` });
+  const db = new Datastore({ filename: `${DB_PATH}/${dbName}.db` });
 
   db.loadDatabase(err => {
     if (err) {

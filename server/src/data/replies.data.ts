@@ -1,5 +1,7 @@
 import Datastore from "nedb";
 
+const DB_PATH = process.env.DB_PATH || "../data";
+
 // Put this as a constant so we can reuse the code below
 const dbName = "replies";
 
@@ -13,7 +15,7 @@ export interface EncryptedDoc extends InputEncryptedDoc {
   _id: string;
 }
 
-const db = new Datastore({ filename: `../data/${dbName}.db` });
+const db = new Datastore({ filename: `${DB_PATH}/${dbName}.db` });
 
 db.loadDatabase(err => {
   if (err) {
