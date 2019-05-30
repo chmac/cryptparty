@@ -2,8 +2,8 @@ import Server from "./server";
 
 Server.start();
 
-const shutdown = (reason: string, done) => {
-  console.log("Sutting down server #RbycQQ", reason);
+const shutdown = (reason: string, done, err?) => {
+  console.log("Sutting down server #RbycQQ", reason, err);
   done();
 };
 
