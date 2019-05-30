@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  web:
+    image: chmac/cryptparty-server
+    volumes:
+      - "../../data:/data/"
+    environment:
+      NODE_ENV: production
+      DB_PATH: /data/
