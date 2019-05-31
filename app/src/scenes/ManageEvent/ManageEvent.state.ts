@@ -6,16 +6,19 @@ import { create, Invitee } from "../../services/invites";
 import { Event, getBySecretKey } from "../../services/events";
 import history from "../../history";
 
-const SET_IS_OWNER = "cryptparty/ManageEvent/SET_IS_OWNER";
-export interface SetIsOwnerAction extends Action<typeof SET_IS_OWNER> {
+const SET_SHOW_SAVE_MESSAGE = "cryptparty/ManageEvent/SET_SHOW_SAVE_MESSAGE";
+export interface SetShowSaveMessageAction
+  extends Action<typeof SET_SHOW_SAVE_MESSAGE> {
   payload: {
-    isOwner: boolean;
+    showSaveMessage: boolean;
   };
 }
-export const setIsOwner = (isOwner: boolean): SetIsOwnerAction => ({
-  type: SET_IS_OWNER,
+export const setShowSaveMessage = (
+  showSaveMessage: boolean
+): SetShowSaveMessageAction => ({
+  type: SET_SHOW_SAVE_MESSAGE,
   payload: {
-    isOwner
+    showSaveMessage
   }
 });
 
@@ -93,13 +96,13 @@ export const createInvite = (): ThunkAction<void, AppState, {}, AnyAction> => (
 };
 
 export type Actions =
-  | SetIsOwnerAction
+  | SetShowSaveMessageAction
   | LoadEventErrorAction
   | LoadEventAction
   | CreateInviteeAction;
 
 interface State {
-  isOwner: boolean;
+  showSaveMessage: boolean;
   isLoading: boolean;
   isError: boolean;
   error: string;
@@ -107,7 +110,7 @@ interface State {
   event: Event;
 }
 const empty: State = {
-  isOwner: false,
+  showSaveMessage: false,
   isLoading: true,
   isError: false,
   error: "",
@@ -120,8 +123,8 @@ const empty: State = {
 };
 const reducer: Reducer<State, Actions> = (state = empty, action): State => {
   switch (action.type) {
-    case SET_IS_OWNER: {
-      return { ...state, isOwner: action.payload.isOwner };
+    case SET_SHOW_SAVE_MESSAGE: {
+      return { ...state, showSaveMessage: action.payload.showSaveMessage };
     }
     case LOAD_EVENT: {
       return {

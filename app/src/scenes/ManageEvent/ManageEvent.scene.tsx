@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, Redirect } from "react-router";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { connect } from "react-redux";
@@ -11,19 +11,32 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
+import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 
 import { AppState } from "../../store";
-import { setIsOwner, loadEvent, createInvite } from "./ManageEvent.state";
+import {
+  setShowSaveMessage,
+  loadEvent,
+  createInvite
+} from "./ManageEvent.state";
 import { replyToString } from "../../services/replies";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
   const { match, classes, loadEvent } = props;
-  const { key } = match.params;
+  const { key, action } = match.params;
 
   useEffect(() => {
     loadEvent(key);
   }, [loadEvent, key]);
+
+  if (!!action && action === "s") {
+    props.setShowSaveMessage(true);
+    // Remove the trailing `/o` part from the URL. This allows the event owner
+    // to share this URL from their browser directly, and the recipient will not
+    // see the "share this page" message.
+    return <Redirect to={`/m/${key}`} />;
+  }
 
   if (props.isLoading) {
     return <div>Loading</div>;
@@ -39,6 +52,34 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       </div>
     );
   }
+
+  const showSaveMesage = () => {
+    return (
+      <Modal open={true}>
+        <div className={classes.modal}>
+          <Paper className={classes.paper}>
+            <Typography variant="h2">Save this page</Typography>
+            <Typography className={classes.p}>
+              This page is the key to your event. There is no way to recover it.
+            </Typography>{" "}
+            <Typography className={classes.p}>
+              We recommend saving it somewhere offline and secure. Signal
+              messenger could be a great option!
+            </Typography>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => {
+                props.setShowSaveMessage(false);
+              }}
+            >
+              Done
+            </Button>
+          </Paper>
+        </div>
+      </Modal>
+    );
+  };
 
   const getInvitees = () => {
     if (!props.event.invitees || !props.event.invitees.length) {
@@ -64,9 +105,7 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <Typography className={classes.p} color="secondary">
-        Save this link.
-      </Typography>
+      {props.showSaveMessage ? showSaveMesage() : null}
       <Typography className={classes.p}>
         This link is your event. If you lose this page there is no way to
         recover it.
@@ -115,8 +154,8 @@ const mapDispatchToProps = (
   dispatch: ThunkDispatch<AppState, {}, AnyAction>
 ) => {
   return {
-    setIsOwner: (isOwner: boolean) => {
-      dispatch(setIsOwner(isOwner));
+    setShowSaveMessage: (showSaveMesage: boolean) => {
+      dispatch(setShowSaveMessage(showSaveMesage));
     },
     loadEvent: (secretKey: string) => {
       dispatch(loadEvent(secretKey));
@@ -134,6 +173,14 @@ const styles = (theme: Theme) =>
       padding: theme.spacing(2),
       margin: theme.spacing(2, 0)
     },
+    modal: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "80vw",
+      maxWidth: "400px"
+    },
     heading: {
       margin: theme.spacing(3, 0)
     },
@@ -146,6 +193,7 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 interface RouteParams {
   key: string;
+  action: string;
 }
 type Props = StateProps &
   DispatchProps &
