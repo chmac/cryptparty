@@ -31,13 +31,21 @@ db.loadDatabase(err => {
 // const insert = async (doc: EncryptedDoc): Promise<EncryptedDoc> => {
 export const insert = async (doc: InputEncryptedDoc) => {
   return new Promise((resolve, reject) => {
-    db.insert(doc, (err, newDoc: EncryptedDoc) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(newDoc);
+    db.update(
+      {
+        eventId: doc.eventId,
+        inviteId: doc.inviteId
+      },
+      doc,
+      { upsert: true },
+      (err, _numUpdated: number, newDoc: EncryptedDoc) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(newDoc);
+        }
       }
-    });
+    );
   });
 };
 
