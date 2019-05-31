@@ -15,4 +15,4 @@ RUN [ "yarn", "install", "--production" ]
 EXPOSE 4000
 
 # Start the app by running `yarn start`
-CMD [ "yarn", "start" ]
+CMD [ "node", "dist/main.js" ]
