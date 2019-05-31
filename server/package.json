@@ -16,8 +16,7 @@
     "cryptparty"
   ],
   "scripts": {
-    "start": "node build/main.js",
-    "develop": "NODE_ENV='development' nodemon",
+    "start": "NODE_ENV='development' nodemon",
     "debug": "NODE_ENV='debug' nodemon",
     "build": "tsc"
   },
