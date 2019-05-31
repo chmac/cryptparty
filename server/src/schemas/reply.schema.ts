@@ -63,7 +63,6 @@ export const resolvers = {
         inviteId,
         content
       });
-      console.log("sendReply mutation #VBe1ZW", reply);
       return {
         sucesss: true,
         reply
