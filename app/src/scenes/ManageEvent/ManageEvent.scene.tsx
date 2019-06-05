@@ -58,9 +58,10 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       <Modal open={true}>
         <div className={classes.modal}>
           <Paper className={classes.paper}>
-            <Typography variant="h2">Save this page</Typography>
+            <Typography variant="h2">Save this link</Typography>
             <Typography className={classes.p}>
-              This page is the key to your event. There is no way to recover it.
+              This page (link) is the key to your event. There is no way to
+              recover it.
             </Typography>{" "}
             <Typography className={classes.p}>
               We recommend saving it somewhere offline and secure. Signal
