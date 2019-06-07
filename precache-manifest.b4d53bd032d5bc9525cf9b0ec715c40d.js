@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "829dec4ba0f2f1ce92493653addb2f5e",
+    "revision": "c344edf070505044050eaf017c95fad1",
     "url": "/cryptparty/index.html"
   },
   {
