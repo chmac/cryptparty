@@ -144,7 +144,7 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
   return (
     <>
       {props.isOwner ? showOwnerMesage() : null}
-      <Typography variant="h2">Dear {props.invite.name}</Typography>
+      <Typography variant="h2">{props.invite.name}</Typography>
       <Paper className={classes.paper}>
         <ReactMarkdown source={props.invite.event.description} />
       </Paper>
