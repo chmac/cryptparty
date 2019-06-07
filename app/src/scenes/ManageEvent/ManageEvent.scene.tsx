@@ -99,15 +99,12 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
         switch (invitee.reply.reply) {
           case Reply.YES: {
             return "yes";
-            break;
           }
           case Reply.MAYBE: {
             return "maybe";
-            break;
           }
           case Reply.NO: {
             return "no";
-            break;
           }
         }
       };
