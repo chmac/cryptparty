@@ -13,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 
 import { AppState } from "../../store";
 import {
@@ -20,7 +21,7 @@ import {
   loadEvent,
   createInvite
 } from "./ManageEvent.state";
-import { replyToString } from "../../services/replies";
+import { replyToString, Reply } from "../../services/replies";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
   const { match, classes, loadEvent } = props;
@@ -91,13 +92,35 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       );
     }
     return props.event.invitees.map(invitee => {
+      const getClassName = () => {
+        if (!invitee.reply) {
+          return "noReply";
+        }
+        switch (invitee.reply.reply) {
+          case Reply.YES: {
+            return "yes";
+            break;
+          }
+          case Reply.MAYBE: {
+            return "maybe";
+            break;
+          }
+          case Reply.NO: {
+            return "no";
+            break;
+          }
+        }
+      };
+
       return (
         <ListItem key={invitee._id}>
           <ListItemText>
             {invitee.name} -{" "}
-            {!!invitee.reply
-              ? `replied ${replyToString(invitee.reply.reply)}`
-              : "no reply"}
+            <Box className={classes[getClassName()]} component="span">
+              {!!invitee.reply
+                ? `replied ${replyToString(invitee.reply.reply)}`
+                : "no reply"}
+            </Box>
           </ListItemText>
         </ListItem>
       );
@@ -187,6 +210,18 @@ const styles = (theme: Theme) =>
     },
     p: {
       margin: theme.spacing(1, 0)
+    },
+    yes: {
+      color: "green"
+    },
+    maybe: {
+      color: "orange"
+    },
+    no: {
+      color: "red"
+    },
+    noReply: {
+      color: "grey"
     }
   });
 
