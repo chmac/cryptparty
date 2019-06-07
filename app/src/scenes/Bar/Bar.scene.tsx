@@ -9,7 +9,6 @@ const Bar: React.FC<Props> = (props: Props) => {
 
   return (
     <AppBar position="static" color="default">
-      {/* <Toolbar> */}
       <Box className={classes.inner}>
         <Typography variant="h6" component="h1" color="inherit">
           Zero Knowledge Party
@@ -18,7 +17,6 @@ const Bar: React.FC<Props> = (props: Props) => {
           <Box fontSize="0.8em">Encrypted parties since 2020</Box>
         </Typography>
       </Box>
-      {/* </Toolbar> */}
     </AppBar>
   );
 };
