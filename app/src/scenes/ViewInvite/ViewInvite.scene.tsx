@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
@@ -77,12 +78,14 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
   const showReplyStatus = () => {
     if (props.invite.reply === undefined) {
       return (
-        <Typography className={classes.p}>You have not yet replied.</Typography>
+        <Typography className={classes.pBottom}>
+          You have not yet replied.
+        </Typography>
       );
     }
 
     return (
-      <Typography className={classes.p}>
+      <Typography className={classes.pBottom}>
         You have replied: {replyToString(props.invite.reply)}
       </Typography>
     );
@@ -91,7 +94,7 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
   const showReplyButtons = () => {
     return (
       <>
-        <Typography className={classes.p}>
+        <Typography className={classes.pBottom}>
           {props.invite.reply !== undefined
             ? "Update your reply"
             : "Are you coming?"}
@@ -145,8 +148,10 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
       <Paper className={classes.paper}>
         <ReactMarkdown source={props.invite.event.description} />
       </Paper>
-      {showReplyStatus()}
-      {showReplyButtons()}
+      <AppBar position="fixed" color="inherit" className={classes.appBar}>
+        {showReplyStatus()}
+        {showReplyButtons()}
+      </AppBar>
     </>
   );
 };
@@ -176,8 +181,14 @@ const styles = (theme: Theme) =>
   createStyles({
     paper: {
       ...theme.mixins.gutters(),
-      padding: theme.spacing(2, 0),
-      margin: theme.spacing(2, 0)
+      padding: theme.spacing(2),
+      margin: theme.spacing(2, 0),
+      marginBottom: theme.spacing(18)
+    },
+    appBar: {
+      ...theme.mixins.gutters(),
+      top: "auto",
+      bottom: 0
     },
     modal: {
       position: "absolute",
@@ -190,8 +201,13 @@ const styles = (theme: Theme) =>
     p: {
       margin: theme.spacing(2, 0)
     },
+    pBottom: {
+      marginTop: theme.spacing(1)
+    },
     buttonGrid: {
-      ...theme.mixins.gutters()
+      ...theme.mixins.gutters(),
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
     }
   });
 
