@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/cryptparty/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/cryptparty/static/js/main.f4207605.chunk.js",
-    "main.js.map": "/cryptparty/static/js/main.f4207605.chunk.js.map",
+    "main.js": "/cryptparty/static/js/main.bb30014f.chunk.js",
+    "main.js.map": "/cryptparty/static/js/main.bb30014f.chunk.js.map",
     "runtime~main.js": "/cryptparty/static/js/runtime~main.8e2c3be2.js",
     "runtime~main.js.map": "/cryptparty/static/js/runtime~main.8e2c3be2.js.map",
-    "static/js/2.935a9d19.chunk.js": "/cryptparty/static/js/2.935a9d19.chunk.js",
-    "static/js/2.935a9d19.chunk.js.map": "/cryptparty/static/js/2.935a9d19.chunk.js.map",
+    "static/js/2.eeb1ab64.chunk.js": "/cryptparty/static/js/2.eeb1ab64.chunk.js",
+    "static/js/2.eeb1ab64.chunk.js.map": "/cryptparty/static/js/2.eeb1ab64.chunk.js.map",
     "index.html": "/cryptparty/index.html",
-    "precache-manifest.f63f804d2af893524d0909c150f96b3a.js": "/cryptparty/precache-manifest.f63f804d2af893524d0909c150f96b3a.js",
+    "precache-manifest.89702976d838709844d1b28e1b16fdc1.js": "/cryptparty/precache-manifest.89702976d838709844d1b28e1b16fdc1.js",
     "service-worker.js": "/cryptparty/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/cryptparty/static/css/main.5ecd60fb.chunk.css.map"
   }
