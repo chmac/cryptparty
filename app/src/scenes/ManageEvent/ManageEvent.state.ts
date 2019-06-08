@@ -1,10 +1,12 @@
 import { Reducer, Action, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
+import sortBy from "lodash/fp/sortBy";
 
 import { AppState } from "../../store";
-import { create, Invitee } from "../../services/invites";
-import { Event, getBySecretKey } from "../../services/events";
+import { create } from "../../services/invites";
+import { Event, Invitee, getBySecretKey } from "../../services/events";
 import history from "../../history";
+import { Reply } from "../../services/replies";
 
 const SET_SHOW_SAVE_MESSAGE = "cryptparty/ManageEvent/SET_SHOW_SAVE_MESSAGE";
 export interface SetShowSaveMessageAction
@@ -121,17 +123,40 @@ const empty: State = {
     invitees: []
   }
 };
+
+const replyToSortOrder = (reply: Reply | undefined): number => {
+  switch (reply) {
+    case Reply.YES:
+      return 0;
+    case Reply.MAYBE:
+      return 1;
+    case Reply.NO:
+      return 2;
+    default:
+      return 3;
+  }
+};
+
+const sortInvitees = sortBy((invitee: Invitee) => [
+  replyToSortOrder(invitee.reply && invitee.reply.reply),
+  invitee.name
+]);
+
 const reducer: Reducer<State, Actions> = (state = empty, action): State => {
   switch (action.type) {
     case SET_SHOW_SAVE_MESSAGE: {
       return { ...state, showSaveMessage: action.payload.showSaveMessage };
     }
     case LOAD_EVENT: {
+      const invitees = sortInvitees(action.payload.event.invitees);
       return {
         ...state,
         isLoading: false,
         secreteKey: action.payload.secretKey,
-        event: action.payload.event
+        event: {
+          ...action.payload.event,
+          invitees: sortInvitees(action.payload.event.invitees)
+        }
       };
     }
     case LOAD_EVENT_ERROR: {
@@ -147,7 +172,10 @@ const reducer: Reducer<State, Actions> = (state = empty, action): State => {
         ...state,
         event: {
           ...state.event,
-          invitees: [...state.event.invitees, action.payload.invitee]
+          invitees: sortInvitees([
+            ...state.event.invitees,
+            action.payload.invitee
+          ])
         }
       };
     }

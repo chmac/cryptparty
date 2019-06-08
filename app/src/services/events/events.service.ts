@@ -17,14 +17,15 @@ export interface NewEvent {
 export interface EventWithId extends NewEvent {
   _id: string;
 }
+export interface Invitee {
+  _id: string;
+  name: string;
+  reply?: {
+    reply: Reply;
+  };
+}
 export interface Event extends EventWithId {
-  invitees: {
-    _id: string;
-    name: string;
-    reply?: {
-      reply: Reply;
-    };
-  }[];
+  invitees: Invitee[];
 }
 
 // @TODO Figure out how to convert gql tags into types
