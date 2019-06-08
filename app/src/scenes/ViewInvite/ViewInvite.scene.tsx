@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
+import green from "@material-ui/core/colors/green";
+import red from "@material-ui/core/colors/red";
 
 import { AppState } from "../../store";
 import { setIsOwner, loadInvite, sendReply } from "./ViewInvite.state";
@@ -102,9 +104,9 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
         <Grid container className={classes.buttonGrid} spacing={2}>
           <Grid item xs={4}>
             <Button
+              className={classes.no}
               variant="contained"
               fullWidth
-              color="primary"
               onClick={() => {
                 props.sendRepy(Reply.NO);
               }}
@@ -126,9 +128,9 @@ const ViewInvite: React.FC<Props> = (props: Props) => {
           </Grid>
           <Grid item xs={4}>
             <Button
+              className={classes.yes}
               variant="contained"
               fullWidth
-              color="secondary"
               onClick={() => {
                 props.sendRepy(Reply.YES);
               }}
@@ -208,6 +210,12 @@ const styles = (theme: Theme) =>
       ...theme.mixins.gutters(),
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
+    },
+    yes: {
+      backgroundColor: green[500]
+    },
+    no: {
+      backgroundColor: red[500]
     }
   });
 
