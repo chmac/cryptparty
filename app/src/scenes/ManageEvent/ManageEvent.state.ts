@@ -148,7 +148,6 @@ const reducer: Reducer<State, Actions> = (state = empty, action): State => {
       return { ...state, showSaveMessage: action.payload.showSaveMessage };
     }
     case LOAD_EVENT: {
-      const invitees = sortInvitees(action.payload.event.invitees);
       return {
         ...state,
         isLoading: false,
