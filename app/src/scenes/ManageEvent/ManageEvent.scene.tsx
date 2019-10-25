@@ -22,6 +22,7 @@ import {
   createInvite
 } from "./ManageEvent.state";
 import { replyToString, Reply } from "../../services/replies";
+import { Invitee } from "../../services/events";
 
 const ManageEvent: React.FC<Props> = (props: Props) => {
   const { match, classes, loadEvent } = props;
@@ -152,6 +153,10 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       </Typography>
       <Paper className={classes.paper}>
         <Typography>
+          Yes {props.replyCounts.yes}, Maybe: {props.replyCounts.maybe}, No:{" "}
+          {props.replyCounts.no}, Not replied: {props.replyCounts.noReply}
+        </Typography>
+        <Typography>
           You created invite links for the following people.
         </Typography>
         <List dense>{getInvitees()}</List>
@@ -166,9 +171,29 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
   );
 };
 
+const countReplies = (invitees: Invitee[]) => (countReply?: Reply): number =>
+  invitees.reduce((count, invitee) => {
+    if (invitee.reply && invitee.reply.reply === countReply) {
+      return count + 1;
+    }
+    if (!invitee.reply && countReply === undefined) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+
 const mapStateToProps = (state: AppState) => {
   const { ManageEvent } = state;
-  return ManageEvent;
+  const getReplyCount = countReplies(ManageEvent.event.invitees);
+  return {
+    ...ManageEvent,
+    replyCounts: {
+      yes: getReplyCount(Reply.YES),
+      no: getReplyCount(Reply.NO),
+      maybe: getReplyCount(Reply.MAYBE),
+      noReply: getReplyCount()
+    }
+  };
 };
 
 const mapDispatchToProps = (
