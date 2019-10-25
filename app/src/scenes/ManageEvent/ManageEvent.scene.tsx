@@ -153,9 +153,21 @@ const ManageEvent: React.FC<Props> = (props: Props) => {
       </Typography>
       <Paper className={classes.paper}>
         <Typography>
-          Yes {props.replyCounts.yes}, Maybe: {props.replyCounts.maybe}, No:{" "}
-          {props.replyCounts.no}, Not replied: {props.replyCounts.noReply}
+          <span className={classes.yes}>Yes:</span> {props.replyCounts.yes}
         </Typography>
+        <Typography>
+          <span className={classes.maybe}>Maybe:</span>{" "}
+          {props.replyCounts.maybe}
+        </Typography>
+        <Typography>
+          <span className={classes.no}>No:</span> {props.replyCounts.no}
+        </Typography>
+        <Typography>
+          <span className={classes.noReply}>No reply:</span>{" "}
+          {props.replyCounts.noReply}
+        </Typography>
+      </Paper>
+      <Paper className={classes.paper}>
         <Typography>
           You created invite links for the following people.
         </Typography>
