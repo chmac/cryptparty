@@ -212,10 +212,16 @@ const styles = (theme: Theme) =>
       marginBottom: theme.spacing(1)
     },
     yes: {
-      backgroundColor: green[500]
+      backgroundColor: green[500],
+      "&:hover": {
+        backgroundColor: green[500]
+      }
     },
     no: {
-      backgroundColor: red[500]
+      backgroundColor: red[500],
+      "&:hover": {
+        backgroundColor: red[500]
+      }
     }
   });
 
