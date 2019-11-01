@@ -8,6 +8,18 @@ import { Event, Invitee, getBySecretKey } from "../../services/events";
 import history from "../../history";
 import { Reply } from "../../services/replies";
 
+const getTitleFromDescription = (description: string): string => {
+  const firstLine = description.split("\n")[0] || "";
+  const title = firstLine.replace(/#/g, "");
+  return title || "";
+};
+
+const setTitle = (title: string): void => {
+  if (!!title) {
+    document.title = title;
+  }
+};
+
 const SET_SHOW_SAVE_MESSAGE = "cryptparty/ManageEvent/SET_SHOW_SAVE_MESSAGE";
 export interface SetShowSaveMessageAction
   extends Action<typeof SET_SHOW_SAVE_MESSAGE> {
@@ -57,6 +69,7 @@ export const loadEvent = (
   try {
     const event = await getBySecretKey(secretKey);
     dispatch(_loadEvent(secretKey, event));
+    setTitle(getTitleFromDescription(event.description));
   } catch (error) {
     dispatch(_loadEventError(error.message));
   }
