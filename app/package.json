@@ -17,7 +17,7 @@
     "chainpad-crypto": "git://github.com/chmac/chainpad-crypto.git#just-default-export-factory",
     "graphql": "^14.3.0",
     "history": "^4.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "react": "^16.8.6",
     "react-apollo": "^2.5.5",
     "react-dom": "^16.8.6",
